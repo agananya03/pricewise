@@ -1,0 +1,341 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// USER MANAGEMENT
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  password      String?
+  
+  accounts      Account[]
+  sessions      Session[]
+  location      UserLocation?
+  preferences   UserPreferences?
+  scans         Scan[]
+  priceReports  PriceReport[]
+  alerts        PriceAlert[]
+  favorites     FavoriteProduct[]
+  receipts      Receipt[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model UserLocation {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  
+  latitude  Float
+  longitude Float
+  address   String?
+  city      String
+  state     String
+  zipCode   String
+  country   String   @default("US")
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  updatedAt DateTime @updatedAt
+  
+  @@index([latitude, longitude])
+  @@map("user_locations")
+}
+
+model UserPreferences {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  
+  searchRadius          Int      @default(10) // miles
+  priceAlertEnabled     Boolean  @default(true)
+  emailNotifications    Boolean  @default(true)
+  pushNotifications     Boolean  @default(true)
+  preferredStores       String[]
+  currency              String   @default("USD")
+  
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  updatedAt             DateTime @updatedAt
+  
+  @@map("user_preferences")
+}
+
+// ============================================
+// PRODUCTS & CATALOG
+// ============================================
+
+model Product {
+  id          String   @id @default(cuid())
+  barcode     String   @unique
+  
+  name        String
+  brand       String?
+  category    String
+  subcategory String?
+  description String?  @db.Text
+  
+  size        String?
+  unit        String?
+  imageUrl    String?
+  
+  prices      Price[]
+  favorites   FavoriteProduct[]
+  
+  // Metadata
+  verified    Boolean  @default(false)
+  source      String?  // "manual", "open_food_facts", "upc_database"
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([barcode])
+  @@index([category])
+  @@map("products")
+}
+
+// ============================================
+// PRICING DATA
+// ============================================
+
+model Price {
+  id          String   @id @default(cuid())
+  
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  amount      Float
+  currency    String   @default("USD")
+  
+  storeId     String?
+  store       Store?   @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  
+  // Location data (for stores without storeId)
+  location    String?
+  latitude    Float?
+  longitude   Float?
+  
+  reportId    String?
+  report      PriceReport? @relation(fields: [reportId], references: [id], onDelete: SetNull)
+  
+  verified    Boolean  @default(false)
+  isOutlier   Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([productId])
+  @@index([storeId])
+  @@index([createdAt])
+  @@index([latitude, longitude])
+  @@map("prices")
+}
+
+model Store {
+  id        String   @id @default(cuid())
+  
+  name      String
+  chain     String?
+  address   String
+  city      String
+  state     String
+  zipCode   String
+  country   String   @default("US")
+  
+  latitude  Float
+  longitude Float
+  
+  phoneNumber String?
+  website     String?
+  
+  prices    Price[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([latitude, longitude])
+  @@index([chain])
+  @@map("stores")
+}
+
+// ============================================
+// USER ACTIVITY
+// ============================================
+
+model Scan {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type        ScanType
+  
+  // Raw data
+  imageUrl    String?
+  rawData     Json?    // Barcode data, OCR text
+  
+  // Processed results
+  results     Json?    // Extracted products, prices
+  
+  // Location at scan time
+  latitude    Float?
+  longitude   Float?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@map("scans")
+}
+
+model PriceReport {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  prices      Price[]
+  
+  source      ReportSource // "scan", "manual", "receipt"
+  scanId      String?
+  
+  verified    Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@map("price_reports")
+}
+
+model PriceAlert {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  productId   String
+  
+  targetPrice Float
+  condition   AlertCondition // "below", "above", "change"
+  
+  active      Boolean  @default(true)
+  notified    Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([productId])
+  @@map("price_alerts")
+}
+
+model FavoriteProduct {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, productId])
+  @@index([userId])
+  @@map("favorite_products")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum ScanType {
+  BARCODE
+  RECEIPT
+  MANUAL
+}
+
+enum ReportSource {
+  SCAN
+  MANUAL
+  RECEIPT
+  API
+}
+
+enum AlertCondition {
+  BELOW
+  ABOVE
+  CHANGE
+  DEAL
+}
+
+model Receipt {
+  id        String        @id @default(cuid())
+  userId    String
+  store     String
+  date      DateTime
+  total     Float
+  imageUrl  String?
+  items     ReceiptItem[]
+  createdAt DateTime      @default(now())
+  
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ReceiptItem {
+  id        String  @id @default(cuid())
+  receiptId String
+  name      String
+  price     Float
+  quantity  Int     @default(1)
+  
+  receipt   Receipt @relation(fields: [receiptId], references: [id], onDelete: Cascade)
+}
