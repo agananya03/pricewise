@@ -35,44 +35,10 @@ export class PriceComparator {
         return { min, max, avg, median };
     }
 
-    async comparePrice(
-        productId: string,
-        currentPrice: number,
-        latitude?: number,
-        longitude?: number,
-        radius: number = 10
-    ) {
-        // 1. Get other prices for this product
-        const others = await prisma.price.findMany({
-            where: {
-                productId,
-                createdAt: {
-                    gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // Last 90 days only
-                }
-                // TODO: Filter by location/radius if coordinates provided
-            },
-            include: {
-                store: true,
-            },
-            orderBy: {
-                amount: 'asc',
-            },
-            take: 20, // Increased sample size for better stats
-        });
-
-        // Extract raw price amounts including the current one for fair market analysis
-        const allPrices = [...others.map(p => p.amount), currentPrice];
-        const stats = this.getPriceStatistics(allPrices);
-
-        const lowest = others[0]?.amount || currentPrice;
-        const difference = currentPrice - lowest;
-        const savings = Math.max(0, difference);
-
     private getTrend(prices: { amount: number, createdAt: Date }[]) {
         if (prices.length < 2) return 'stable';
 
         // Simple linear regression or start/end comparison
-        // Let's do a simple comparison of the average of the first half vs second half of the time window
         const sortedByDate = [...prices].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
         const mid = Math.floor(sortedByDate.length / 2);
 
@@ -93,8 +59,6 @@ export class PriceComparator {
         if (currentPrice <= stats.min) return 100; // Best deal possible
         if (currentPrice >= stats.max) return 0;   // Worst deal possible
 
-        // Linear interpolation between min (100) and max (0)
-        // This is a simplified model. We could use standard deviation for Z-score.
         const range = stats.max - stats.min;
         if (range === 0) return 50;
 
@@ -110,21 +74,38 @@ export class PriceComparator {
         return 'Warning';
     }
 
+    private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+        const R = 6371; // Radius of the earth in km
+        const dLat = this.deg2rad(lat2 - lat1);
+        const dLon = this.deg2rad(lon2 - lon1);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c; // Distance in km
+        return d;
+    }
+
+    private deg2rad(deg: number) {
+        return deg * (Math.PI / 180);
+    }
+
     async comparePrice(
         productId: string,
         currentPrice: number,
         latitude?: number,
         longitude?: number,
-        radius: number = 10
+        radius: number = 50 // Default 50km if location provided
     ) {
         // 1. Get other prices for this product
-        const others = await prisma.price.findMany({
+        // We fetch a bit more than usual to allow for filtering
+        const rawOthers = await prisma.price.findMany({
             where: {
                 productId,
                 createdAt: {
                     gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // Last 90 days only
                 }
-                // TODO: Filter by location/radius if coordinates provided
             },
             include: {
                 store: true,
@@ -132,10 +113,50 @@ export class PriceComparator {
             orderBy: {
                 amount: 'asc',
             },
-            take: 50, // Increase limit for better trends
+            take: 100,
         });
 
+        // 2. Filter by Location (if coordinates provided)
+        let others = rawOthers;
+        if (latitude && longitude) {
+            others = rawOthers.filter(price => {
+                // If price has store with location
+                if (price.store?.latitude && price.store?.longitude) {
+                    const dist = this.calculateDistance(
+                        latitude,
+                        longitude,
+                        price.store.latitude,
+                        price.store.longitude
+                    );
+                    return dist <= radius;
+                }
+
+                // If price itself has location (user scan)
+                if (price.latitude && price.longitude) {
+                    const dist = this.calculateDistance(
+                        latitude,
+                        longitude,
+                        price.latitude,
+                        price.longitude
+                    );
+                    return dist <= radius;
+                }
+
+                // If no location, maybe exclude? Or include as "unknown location"?
+                // For now, let's exclude strictly if we are in location mode, unless verified global?
+                return false;
+            });
+
+            // If filtering killed everything, fallback or return empty?
+            // Let's keep it empty to show "No local prices found" which is accurate.
+        }
+
+        // If we filtered down to 0, use rawOthers just to avoid crashing stats? 
+        // No, user wants local. If 0, stats are 0.
+
+        // Sort again by price after filtering (though they should still be sorted if filter preserves order)
         // Extract raw price amounts including the current one for fair market analysis
+
         const allPrices = [...others.map(p => p.amount), currentPrice];
         const stats = this.getPriceStatistics(allPrices);
 

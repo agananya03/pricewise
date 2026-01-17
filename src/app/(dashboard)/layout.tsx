@@ -1,6 +1,6 @@
 
 import { Header } from "@/components/layout/header"
-import { Sidebar } from "@/components/layout/sidebar"
+
 
 export default function DashboardLayout({
     children,
@@ -9,10 +9,10 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="flex h-screen overflow-hidden">
-            <Sidebar className="hidden w-64 border-r md:block" />
+
             <div className="flex flex-1 flex-col overflow-hidden">
                 <Header />
-                <main className="flex-1 overflow-y-auto p-4">{children}</main>
+                <main className="flex-1 overflow-y-auto p-4 w-full max-w-7xl mx-auto">{children}</main>
             </div>
         </div>
     )

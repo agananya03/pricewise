@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Barcode, FileText, Home, Settings, ShoppingCart } from "lucide-react"
+import { Barcode, FileText, Home, Settings, ShoppingCart, Map as MapIcon, PieChart, CheckSquare } from "lucide-react"
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -35,6 +35,25 @@ export function Sidebar({ className }: SidebarProps) {
             icon: FileText,
             color: "text-green-500",
         },
+        {
+            href: "/stores",
+            label: "Store Locator",
+            icon: MapIcon,
+            color: "text-blue-500",
+        },
+        {
+            href: "/analytics",
+            label: "Analytics",
+            icon: PieChart,
+            color: "text-purple-500",
+        },
+        {
+            href: "/shopping-list",
+            label: "Shopping List",
+            icon: CheckSquare,
+            color: "text-green-500",
+        },
+
         {
             href: "/settings",
             label: "Settings",

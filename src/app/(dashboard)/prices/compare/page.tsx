@@ -1,10 +1,13 @@
+import { LocationFilter } from "@/components/pricing/location-filter"
+import { reverseGeocode } from "@/services/geolocation/geocoder"
 import { PriceComparison } from "@/components/pricing/price-comparison"
+import { CreateAlertDialog } from "@/components/pricing/create-alert-dialog"
 import { prisma } from "@/lib/prisma"
 import { PriceComparator } from "@/services/pricing/comparator"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { ArrowRight, ShoppingBag } from "lucide-react"
+import { ArrowRight, ShoppingBag, MapPin } from "lucide-react"
 
 // Force dynamic rendering to ensure fresh data
 export const dynamic = 'force-dynamic'
@@ -16,7 +19,20 @@ interface PageProps {
 export default async function PriceComparePage({ searchParams }: PageProps) {
     const resolvedSearchParams = await searchParams
     const productId = typeof resolvedSearchParams.productId === 'string' ? resolvedSearchParams.productId : undefined
+    const lat = typeof resolvedSearchParams.lat === 'string' ? parseFloat(resolvedSearchParams.lat) : undefined
+    const lng = typeof resolvedSearchParams.lng === 'string' ? parseFloat(resolvedSearchParams.lng) : undefined
+    const radius = typeof resolvedSearchParams.radius === 'string' ? parseFloat(resolvedSearchParams.radius) : 50
+
     const comparator = new PriceComparator()
+
+    // Get location context if active
+    let locationName = null
+    if (lat && lng) {
+        const geo = await reverseGeocode(lat, lng)
+        if (geo) {
+            locationName = `${geo.city || 'Unknown City'}, ${geo.state || ''}`
+        }
+    }
 
     // Fetch products that have prices
     const products = await prisma.product.findMany({
@@ -57,7 +73,10 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
             const currentPrice = selectedProduct.prices[0].amount
             comparisonData = await comparator.comparePrice(
                 selectedProduct.id,
-                currentPrice
+                currentPrice,
+                lat,
+                lng,
+                radius
             )
         }
     }
@@ -72,6 +91,8 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
             <div className="grid gap-6 md:grid-cols-12">
                 {/* Product List Sidebar */}
                 <div className="md:col-span-4 space-y-4">
+                    <LocationFilter />
+
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-lg">Recent Products</CardTitle>
@@ -114,9 +135,26 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                             <div>
                                 <h2 className="text-2xl font-bold">{selectedProduct.name}</h2>
                                 <p className="text-muted-foreground text-sm">Category: {selectedProduct.category}</p>
+                                {locationName && (
+                                    <p className="text-sm font-medium text-green-600 mt-1 flex items-center">
+                                        <MapPin className="w-4 h-4 mr-1" />
+                                        Analyzing prices near {locationName}
+                                    </p>
+                                )}
                             </div>
 
-                            <PriceComparison comparison={comparisonData} />
+
+                            <div className="flex gap-4">
+                                <div className="flex-1">
+                                    <PriceComparison comparison={comparisonData as any} />
+                                </div>
+                            </div>
+
+                            <CreateAlertDialog
+                                productId={selectedProduct.id}
+                                currentPrice={comparisonData.currentPrice}
+                            />
+
 
                             <Card>
                                 <CardHeader>
@@ -126,10 +164,10 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                                     <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
                                         <li>Historical lowest price was <strong>${comparisonData.stats.min.toFixed(2)}</strong>.</li>
                                         <li>Average market price is <strong>${comparisonData.stats.avg.toFixed(2)}</strong>.</li>
-                                        {comparisonData.rating === 'good' && (
+                                        {comparisonData.badge === 'Great' && (
                                             <li className="text-green-600 font-medium">This is currently a great time to buy!</li>
                                         )}
-                                        {comparisonData.rating === 'poor' && (
+                                        {comparisonData.badge === 'Warning' && (
                                             <li className="text-red-500 font-medium">Consider waiting for a better deal or checking other stores.</li>
                                         )}
                                     </ul>

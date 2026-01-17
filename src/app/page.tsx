@@ -1,20 +1,42 @@
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Hero } from "@/components/landing/hero"
 
-export default function LandingPage() {
+
+import { FeatureGrid } from "@/components/landing/feature-grid"
+
+import { CommunitySection } from "@/components/landing/community-section"
+import { AnalyticsPreview } from "@/components/landing/analytics-preview"
+import { LivePriceIntelligence } from "@/components/landing/live-price-intelligence"
+
+
+import { HeatmapSection } from "@/components/landing/heatmap-section"
+
+
+import { Footer } from "@/components/landing/footer"
+
+// Keep existing basic sections if needed, but we have better ones now.
+import { HowItWorks, FinalCTA } from "@/components/landing/section-components"
+
+
+export default function Home() {
     return (
-        <div className="flex h-screen flex-col items-center justify-center space-y-4">
-            <h1 className="text-4xl font-bold">Pricewise</h1>
-            <p className="text-lg text-muted-foreground">Compare prices and save big.</p>
-            <div className="flex space-x-4">
-                <Button asChild>
-                    <Link href="/login">Sign In</Link>
-                </Button>
-                <Button asChild variant="secondary">
-                    <Link href="/dashboard">Go to Dashboard</Link>
-                </Button>
-            </div>
-        </div>
+        <main className="min-h-screen bg-background relative selection:bg-purple-100 selection:text-purple-900">
+
+            <Hero />
+
+            <FeatureGrid />
+
+            <CommunitySection />
+            <AnalyticsPreview />
+            <LivePriceIntelligence />
+
+
+            <HeatmapSection />
+
+
+            <HowItWorks />
+            <FinalCTA />
+            <Footer />
+        </main>
     )
 }

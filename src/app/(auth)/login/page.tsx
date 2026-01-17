@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
     return (
-        <div className="container flex h-screen w-screen flex-col items-center justify-center">
+        <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-black">
             <Link
                 href="/"
                 className={cn(
                     buttonVariants({ variant: "ghost" }),
-                    "absolute left-4 top-4 md:left-8 md:top-8"
+                    "absolute left-4 top-4 md:left-8 md:top-8 text-black hover:bg-gray-100"
                 )}
             >
                 <>
@@ -38,12 +38,12 @@ export default function LoginPage() {
                     Back
                 </>
             </Link>
-            <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                <div className="flex flex-col space-y-2 text-center">
-                    <h1 className="text-2xl font-semibold tracking-tight">
+            <div className="mx-auto flex w-full flex-col justify-center space-y-8 sm:w-[450px]">
+                <div className="flex flex-col space-y-4 text-center">
+                    <h1 className="text-5xl font-black tracking-tighter uppercase text-black">
                         Welcome back
                     </h1>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-base text-gray-500 font-mono uppercase tracking-wide">
                         Sign in with your Google account to continue
                     </p>
                 </div>

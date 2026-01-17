@@ -32,8 +32,57 @@ model User {
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  // Gamification Stats
+  referralCode  String?   @unique
+  totalSaved    Float     @default(0)
+  scanCount     Int       @default(0)
+
+  shoppingLists ShoppingList[]
+  achievements  Achievement[]
   
   @@map("users")
+}
+
+model ShoppingList {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name      String
+  items     ShoppingListItem[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("shopping_lists")
+}
+
+model ShoppingListItem {
+  id             String       @id @default(cuid())
+  shoppingListId String
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+  
+  productId      String?
+  product        Product?     @relation(fields: [productId], references: [id])
+  
+  name           String       // Fallback if no product linked
+  quantity       Int          @default(1)
+  checked        Boolean      @default(false)
+  
+  @@map("shopping_list_items")
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type        String   // "FIRST_SCAN", "SAVER_100", "REFERRAL_MASTER"
+  unlockedAt  DateTime @default(now())
+  
+  @@unique([userId, type])
+  @@map("achievements")
 }
 
 model Account {
@@ -134,6 +183,7 @@ model Product {
   
   prices      Price[]
   favorites   FavoriteProduct[]
+  shoppingListItems ShoppingListItem[]
   
   // Metadata
   verified    Boolean  @default(false)

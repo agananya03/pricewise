@@ -25,7 +25,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     return (
         <div className={cn("grid gap-6", className)} {...props}>
-            <Button variant="outline" type="button" disabled={isLoading} onClick={login}>
+            <Button className="w-full bg-black text-white hover:bg-zinc-800 border border-black" type="button" disabled={isLoading} onClick={login}>
                 {isLoading ? (
                     <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                 ) : (
