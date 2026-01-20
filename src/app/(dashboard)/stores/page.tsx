@@ -87,23 +87,23 @@ export default function StoresPage() {
 
     return (
         <div className="container py-8 space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Store Locator</h1>
-                <p className="text-muted-foreground">
-                    Discover discount hot-zones and find nearby stores. Yellow glow indicates high store density.
+            <div className="border-b-4 border-black pb-4">
+                <h1 className="text-5xl font-black tracking-tighter uppercase mb-2">Global Retail Grid</h1>
+                <p className="text-black/60 font-medium uppercase tracking-widest text-xs">
+                    Geospatial analysis of discount nodes. Yellow zones indicate high density.
                 </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-3">
                 <div className="md:col-span-2 space-y-6">
-                    <Card className="h-[800px]">
-                        <CardHeader className="pb-3">
-                            <CardTitle>Interactive Map</CardTitle>
-                            <CardDescription>
-                                {stores.length} stores mapped. {userLocation ? "Showing stores near you." : "Enable location to see local stores."}
+                    <Card className="h-[800px] rounded-none border-black shadow-none flex flex-col">
+                        <CardHeader className="pb-3 border-b border-black">
+                            <CardTitle className="uppercase font-black tracking-tight">Interactive Map</CardTitle>
+                            <CardDescription className="uppercase font-bold text-xs tracking-widest text-black/60">
+                                {stores.length} nodes active. {userLocation ? "Triangulating local position." : "Location services disabled."}
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="h-[720px] p-0 overflow-hidden relative">
+                        <CardContent className="flex-1 p-0 overflow-hidden relative">
                             <StoreMap stores={stores} userLocation={userLocation} />
                         </CardContent>
                     </Card>

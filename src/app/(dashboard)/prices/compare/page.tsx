@@ -83,9 +83,9 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
 
     return (
         <div className="container py-8 space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Price Comparison</h1>
-                <p className="text-muted-foreground">Select a product to see how its price compares to the market average.</p>
+            <div className="border-b-4 border-black pb-4">
+                <h1 className="text-5xl font-black tracking-tighter uppercase mb-1">Price Comparison</h1>
+                <p className="text-black/60 font-medium uppercase tracking-widest text-xs">Market Intelligence & Analysis</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-12">
@@ -93,33 +93,33 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                 <div className="md:col-span-4 space-y-4">
                     <LocationFilter />
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-lg">Recent Products</CardTitle>
-                            <CardDescription>Products with identified prices</CardDescription>
+                    <Card className="rounded-none border-black shadow-none">
+                        <CardHeader className="border-b border-black pb-3">
+                            <CardTitle className="text-lg uppercase font-black tracking-tight">Recent Products</CardTitle>
+                            <CardDescription className="uppercase text-xs font-bold text-black/60 tracking-wider">Identified Inventory</CardDescription>
                         </CardHeader>
-                        <CardContent className="grid gap-2">
+                        <CardContent className="grid gap-0 p-0">
                             {products.length === 0 ? (
-                                <p className="text-sm text-muted-foreground py-4 text-center">
-                                    No price data found. Scan some items first!
+                                <p className="text-sm text-muted-foreground py-8 text-center font-mono uppercase">
+                                    No data found.<br />Scan items to populate.
                                 </p>
                             ) : (
                                 products.map((product) => (
                                     <Button
                                         key={product.id}
-                                        variant={productId === product.id ? "secondary" : "ghost"}
-                                        className="w-full justify-start h-auto py-3 px-4"
+                                        variant="ghost"
+                                        className={`w-full justify-start h-auto py-4 px-4 rounded-none border-b last:border-0 border-black/10 hover:bg-black hover:text-white transition-all group ${productId === product.id ? "bg-black text-white" : ""}`}
                                         asChild
                                     >
                                         <Link href={`/prices/compare?productId=${product.id}`}>
                                             <div className="flex flex-col items-start gap-1 w-full overflow-hidden">
-                                                <div className="font-semibold truncate w-full">{product.name}</div>
-                                                <div className="text-xs text-muted-foreground flex items-center gap-2">
+                                                <div className="font-bold uppercase tracking-tight truncate w-full">{product.name}</div>
+                                                <div className={`text-[10px] font-mono uppercase flex items-center gap-2 ${productId === product.id ? "text-white/60" : "text-black/40 group-hover:text-white/60"}`}>
                                                     <ShoppingBag className="w-3 h-3" />
                                                     {product._count.prices} prices found
                                                 </div>
                                             </div>
-                                            {productId === product.id && <ArrowRight className="ml-auto w-4 h-4 opacity-50" />}
+                                            {productId === product.id && <ArrowRight className="ml-auto w-4 h-4" />}
                                         </Link>
                                     </Button>
                                 ))
@@ -132,13 +132,13 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                 <div className="md:col-span-8">
                     {comparisonData && selectedProduct ? (
                         <div className="space-y-6">
-                            <div>
-                                <h2 className="text-2xl font-bold">{selectedProduct.name}</h2>
-                                <p className="text-muted-foreground text-sm">Category: {selectedProduct.category}</p>
+                            <div className="border-b-2 border-black pb-6">
+                                <h2 className="text-4xl font-black uppercase tracking-tighter mb-2">{selectedProduct.name}</h2>
+                                <p className="text-black/60 font-bold uppercase tracking-widest text-xs">Category // {selectedProduct.category}</p>
                                 {locationName && (
-                                    <p className="text-sm font-medium text-green-600 mt-1 flex items-center">
-                                        <MapPin className="w-4 h-4 mr-1" />
-                                        Analyzing prices near {locationName}
+                                    <p className="text-xs font-bold font-mono text-black mt-2 flex items-center uppercase">
+                                        <MapPin className="w-3 h-3 mr-2" />
+                                        Targeting: {locationName}
                                     </p>
                                 )}
                             </div>
@@ -156,32 +156,44 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                             />
 
 
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="text-base">Price Tips</CardTitle>
+                            <Card className="rounded-none border-black shadow-none bg-black text-white">
+                                <CardHeader className="border-b border-white/20">
+                                    <CardTitle className="text-lg font-black uppercase tracking-tight">Analysis Protocol</CardTitle>
                                 </CardHeader>
-                                <CardContent>
-                                    <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                                        <li>Historical lowest price was <strong>${comparisonData.stats.min.toFixed(2)}</strong>.</li>
-                                        <li>Average market price is <strong>${comparisonData.stats.avg.toFixed(2)}</strong>.</li>
+                                <CardContent className="pt-6">
+                                    <ul className="list-none text-sm space-y-3 font-mono">
+                                        <li className="flex justify-between border-b border-white/20 pb-2">
+                                            <span className="opacity-70">HISTORICAL LOW</span>
+                                            <span className="font-bold">${comparisonData.stats.min.toFixed(2)}</span>
+                                        </li>
+                                        <li className="flex justify-between border-b border-white/20 pb-2">
+                                            <span className="opacity-70">MARKET MEDIAN</span>
+                                            <span className="font-bold">${comparisonData.stats.avg.toFixed(2)}</span>
+                                        </li>
                                         {comparisonData.badge === 'Great' && (
-                                            <li className="text-green-600 font-medium">This is currently a great time to buy!</li>
+                                            <li className="text-white font-bold uppercase tracking-wider pt-2 flex items-center gap-2">
+                                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                                Optimum Purchase Timing
+                                            </li>
                                         )}
                                         {comparisonData.badge === 'Warning' && (
-                                            <li className="text-red-500 font-medium">Consider waiting for a better deal or checking other stores.</li>
+                                            <li className="text-white/80 font-bold uppercase tracking-wider pt-2 flex items-center gap-2">
+                                                <div className="w-2 h-2 border border-white rounded-full"></div>
+                                                Delay Purchase / Seek Alternatives
+                                            </li>
                                         )}
                                     </ul>
                                 </CardContent>
                             </Card>
                         </div>
                     ) : (
-                        <Card className="h-full flex flex-col items-center justify-center min-h-[400px] text-center p-8 bg-muted/20 border-dashed">
-                            <div className="p-4 bg-background rounded-full mb-4">
-                                <ShoppingBag className="w-8 h-8 text-muted-foreground/50" />
+                        <Card className="h-full flex flex-col items-center justify-center min-h-[400px] text-center p-8 bg-white border-2 border-dashed border-black/20 rounded-none">
+                            <div className="p-6 bg-black text-white rounded-none mb-6">
+                                <ShoppingBag className="w-10 h-10" />
                             </div>
-                            <h3 className="text-lg font-semibold">No Product Selected</h3>
-                            <p className="text-muted-foreground max-w-sm mt-2">
-                                Select a product from the list on the left to analyze its price based on your collected data.
+                            <h3 className="text-xl font-black uppercase tracking-tight">No Product Selected</h3>
+                            <p className="text-black/60 font-medium uppercase tracking-wide text-xs max-w-sm mt-2">
+                                Select inventory from the sidebar to analyze pricing metrics.
                             </p>
                         </Card>
                     )}

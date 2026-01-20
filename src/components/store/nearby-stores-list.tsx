@@ -20,15 +20,15 @@ interface NearbyStoresListProps {
 export function NearbyStoresList({ stores, userLocation }: NearbyStoresListProps) {
     if (!userLocation) {
         return (
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-lg">Nearby Stores</CardTitle>
-                    <CardDescription>Locating you...</CardDescription>
+            <Card className="rounded-none border-black shadow-none">
+                <CardHeader className="border-b border-black pb-4">
+                    <CardTitle className="text-lg uppercase font-black tracking-tight">Nearby Stores</CardTitle>
+                    <CardDescription className="uppercase font-bold text-xs tracking-widest text-black/60">Triangulating...</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <div className="flex items-center justify-center p-4 text-sm text-muted-foreground bg-muted/50 rounded">
+                <CardContent className="pt-6">
+                    <div className="flex items-center justify-center p-4 text-xs font-mono uppercase tracking-widest text-black bg-black/5 border border-black">
                         <MapPin className="w-4 h-4 mr-2 animate-pulse" />
-                        Waiting for location permission...
+                        Awaiting Permissions...
                     </div>
                 </CardContent>
             </Card>
@@ -57,27 +57,28 @@ export function NearbyStoresList({ stores, userLocation }: NearbyStoresListProps
         .slice(0, 5) // Top 5
 
     return (
-        <Card className="h-full">
-            <CardHeader>
-                <CardTitle className="text-lg flex items-center">
-                    <MapPin className="w-5 h-5 mr-2 text-green-600" />
-                    Nearby Stores
+        <Card className="h-full rounded-none border-black shadow-none">
+            <CardHeader className="border-b border-black pb-4">
+                <CardTitle className="text-lg flex items-center uppercase font-black tracking-tight">
+                    <MapPin className="w-5 h-5 mr-2 text-black" />
+                    Nearby Nodes
                 </CardTitle>
-                <CardDescription>Closest locations to you</CardDescription>
+                <CardDescription className="uppercase font-bold text-xs tracking-widest text-black/60">Proximity Vector</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 {sortedStores.map(store => (
-                    <div key={store.id} className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0">
+                    <div key={store.id} className="flex items-center justify-between border-b border-black/10 pb-3 last:border-0 last:pb-0 hover:bg-black/5 p-2 transition-colors -mx-2 px-4">
                         <div>
-                            <div className="font-semibold">{store.name}</div>
-                            <div className="text-xs text-muted-foreground">{store.address}</div>
-                            <div className="text-xs font-medium text-green-600 mt-1">
-                                {store.distance.toFixed(1)} km away
+                            <div className="font-bold uppercase text-sm tracking-tight">{store.name}</div>
+                            <div className="text-[10px] uppercase font-mono text-black/50">{store.address}</div>
+                            <div className="text-xs font-bold font-mono text-black mt-1">
+                                {store.distance.toFixed(1)} KM
                             </div>
                         </div>
                         <Button
                             variant="outline"
                             size="sm"
+                            className="rounded-none border-black hover:bg-black hover:text-white"
                             onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${store.latitude},${store.longitude}`, '_blank')}
                         >
                             <Navigation className="w-3 h-3" />

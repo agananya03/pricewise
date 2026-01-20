@@ -75,7 +75,7 @@ export default function StoreMap({ stores, userLocation }: StoreMapProps) {
         .map(s => [s.latitude, s.longitude, 0.5])
 
     return (
-        <div className="h-[600px] w-full rounded-lg overflow-hidden border relative">
+        <div className="h-[600px] w-full rounded-none overflow-hidden border-none relative">
             <MapContainer center={center} zoom={13} style={{ height: "100%", width: "100%" }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -85,12 +85,12 @@ export default function StoreMap({ stores, userLocation }: StoreMapProps) {
                 {stores.map((store) => (
                     <Marker key={store.id} position={[store.latitude, store.longitude]}>
                         <Popup>
-                            <div className="p-2">
-                                <h3 className="font-bold">{store.name}</h3>
-                                <p className="text-sm text-gray-600">{store.address}</p>
+                            <div className="p-2 font-sans">
+                                <h3 className="font-bold uppercase tracking-tight">{store.name}</h3>
+                                <p className="text-xs text-black/60 uppercase font-mono mb-2">{store.address}</p>
                                 <Button
                                     size="sm"
-                                    className="mt-2 w-full"
+                                    className="mt-2 w-full rounded-none bg-black text-white hover:bg-black/80 font-bold uppercase text-xs"
                                     onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${store.latitude},${store.longitude}`, '_blank')}
                                 >
                                     <Navigation className="w-3 h-3 mr-1" />
