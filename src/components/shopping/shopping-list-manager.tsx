@@ -139,52 +139,55 @@ export function ShoppingListManager() {
             return sum + (price * item.quantity)
         }, 0)
 
-    if (loading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin" /></div>
+    if (loading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin h-6 w-6 text-black" /></div>
 
     return (
-        <Card className="h-full flex flex-col overflow-visible">
-            <CardHeader className="pb-4">
+        <Card className="h-full flex flex-col overflow-visible border-black rounded-none shadow-none">
+            <CardHeader className="pb-6 border-b border-black">
                 <CardTitle className="flex justify-between items-center">
-                    <span>Shopping List</span>
-                    <Badge variant="secondary" className="text-lg">
+                    <span className="uppercase tracking-tighter text-2xl font-black">Shopping list</span>
+                    <Badge variant="outline" className="text-lg rounded-none border-black border-2 px-3 py-1 font-mono font-bold">
                         ${estimatedTotal.toFixed(2)}
                     </Badge>
                 </CardTitle>
-                <CardDescription>Add items from your catalog or manually.</CardDescription>
+                <CardDescription className="text-black/60 font-medium uppercase tracking-wide text-xs mt-1">
+                    Manage your tech catalog and acquisitions.
+                </CardDescription>
             </CardHeader>
 
-            <div className="px-6 pb-2 relative z-20">
+
+            <div className="px-6 pb-2 relative z-20 mt-6">
                 <div className="flex gap-2">
                     <div className="relative flex-1">
-                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-black" />
                         <Input
-                            placeholder="Search products (e.g. Milk)..."
+                            placeholder="SEARCH PRODUCTS..."
                             value={newItem}
                             onChange={(e) => searchProducts(e.target.value)}
                             onFocus={() => !newItem && browseProducts()}
                             onKeyDown={(e) => e.key === 'Enter' && addItem()}
-                            className="pl-8"
+                            className="pl-9 border-black rounded-none focus-visible:ring-0 focus-visible:border-black/60 font-medium uppercase placeholder:text-black/40"
                         />
                     </div>
                     <Button
                         onClick={() => newItem ? addItem() : browseProducts()}
                         size="icon"
-                        variant={newItem ? "default" : "outline"}
+                        className="rounded-none bg-black text-white hover:bg-black/80 border border-black"
                     >
                         {newItem ? <Plus className="h-4 w-4" /> : <Search className="h-4 w-4" />}
                     </Button>
                 </div>
                 {/* Suggestions Dropdown */}
                 {suggestions.length > 0 && (
-                    <div className="absolute left-6 right-6 z-50 bg-background border rounded-md shadow-xl mt-1 max-h-64 overflow-auto">
+                    <div className="absolute left-6 right-6 z-50 bg-white border border-black shadow-none mt-0 max-h-64 overflow-auto rounded-none">
                         {suggestions.map(p => (
                             <div
                                 key={p.id}
-                                className="p-3 hover:bg-muted cursor-pointer flex justify-between text-sm border-b last:border-0"
+                                className="p-3 hover:bg-black hover:text-white cursor-pointer flex justify-between text-sm border-b border-black last:border-0 transition-colors"
                                 onClick={() => selectProduct(p)}
                             >
-                                <span className="font-medium">{p.name}</span>
-                                <span className="text-green-600 font-bold">
+                                <span className="font-bold uppercase tracking-tight">{p.name}</span>
+                                <span className="font-mono">
                                     ${p.prices?.[0]?.amount.toFixed(2) || '?'}
                                 </span>
                             </div>
@@ -193,31 +196,31 @@ export function ShoppingListManager() {
                 )}
             </div>
 
-            <CardContent className="space-y-4 flex-1 overflow-auto pt-2 z-10">
-                <div className="space-y-2">
+            <CardContent className="space-y-4 flex-1 overflow-auto pt-6 z-10">
+                <div className="space-y-0 text-black">
                     {items.length === 0 && (
-                        <div className="text-center py-8 text-muted-foreground space-y-2">
-                            <Search className="h-8 w-8 mx-auto opacity-20" />
-                            <p>List is empty. Search to add products!</p>
+                        <div className="text-center py-12 text-black/40 space-y-2 border-2 border-dashed border-black/20 m-2">
+                            <Search className="h-8 w-8 mx-auto opacity-50" />
+                            <p className="uppercase font-bold tracking-widest text-xs">List is empty</p>
                         </div>
                     )}
                     {items.map(item => (
-                        <div key={item.id} className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors group">
+                        <div key={item.id} className="flex items-center gap-4 p-4 border-b border-black/10 last:border-0 hover:bg-black/5 transition-colors group">
                             <div
-                                className={`h-5 w-5 min-w-5 rounded border flex items-center justify-center cursor-pointer transition-colors ${item.checked ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300'
+                                className={`h-6 w-6 min-w-6 border-2 flex items-center justify-center cursor-pointer transition-all rounded-none ${item.checked ? 'bg-black border-black text-white' : 'border-black bg-transparent'
                                     }`}
                                 onClick={() => toggleItem(item.id, !item.checked)}
                             >
-                                {item.checked && <Check className="h-3 w-3" />}
+                                {item.checked && <Check className="h-4 w-4" />}
                             </div>
 
                             <div className="flex-1 min-w-0">
-                                <span className={`font-medium block truncate ${item.checked ? 'line-through text-muted-foreground' : ''}`}>
+                                <span className={`font-bold block truncate uppercase tracking-tight ${item.checked ? 'line-through text-black/30 decoration-2' : 'text-black'}`}>
                                     {item.name}
                                 </span>
                                 {item.product?.prices?.[0] && (
-                                    <span className="text-xs text-green-600 block truncate">
-                                        Best: ${item.product.prices[0].amount.toFixed(2)}
+                                    <span className={`text-xs block truncate font-mono mt-1 ${item.checked ? 'text-black/30' : 'text-black/60'}`}>
+                                        BEST: ${item.product.prices[0].amount.toFixed(2)}
                                         {item.product.prices[0].store && ` @ ${item.product.prices[0].store.name}`}
                                     </span>
                                 )}
@@ -226,7 +229,7 @@ export function ShoppingListManager() {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 hover:bg-red-50"
+                                className="opacity-0 group-hover:opacity-100 text-black hover:text-white hover:bg-black rounded-none"
                                 onClick={() => deleteItem(item.id)}
                             >
                                 <Trash className="h-4 w-4" />

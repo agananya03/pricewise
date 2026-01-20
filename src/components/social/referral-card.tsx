@@ -30,19 +30,19 @@ export function ReferralCard({ code = "SAVE2024" }: { code?: string }) {
     }
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Invite Friends</CardTitle>
-                <CardDescription>Earn badges for growing the community.</CardDescription>
+        <Card className="border-black rounded-none shadow-none">
+            <CardHeader className="border-b border-black pb-4">
+                <CardTitle className="uppercase tracking-tighter font-black text-2xl">Invite Friends</CardTitle>
+                <CardDescription className="uppercase text-xs tracking-widest font-bold text-black/60">Expand the Network</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
                 <div className="flex gap-2">
-                    <Input readOnly value={`https://pricewise.app/join?code=${code}`} />
-                    <Button variant="outline" size="icon" onClick={handleCopy}>
+                    <Input readOnly value={`https://pricewise.app/join?code=${code}`} className="rounded-none border-black focus-visible:ring-0 font-mono text-xs bg-black/5" />
+                    <Button variant="outline" size="icon" onClick={handleCopy} className="rounded-none border-black hover:bg-black hover:text-white transition-colors">
                         <Copy className="h-4 w-4" />
                     </Button>
                 </div>
-                <Button className="w-full" onClick={handleShare}>
+                <Button className="w-full rounded-none bg-black text-white hover:bg-black/80 font-bold uppercase tracking-widest" onClick={handleShare}>
                     <Share2 className="h-4 w-4 mr-2" />
                     Share Link
                 </Button>

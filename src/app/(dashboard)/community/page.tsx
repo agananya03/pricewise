@@ -24,15 +24,19 @@ export default function CommunityPage() {
     }, [])
 
     return (
-        <div className="container py-8 space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Community & Rewards</h1>
-                <p className="text-muted-foreground">Competitions, achievements, and friends.</p>
+        <div className="container py-12 space-y-12 max-w-7xl mx-auto">
+            <div className="border-l-4 border-black pl-6 py-2">
+                <h1 className="text-6xl font-black tracking-tighter uppercase mb-4 sm:text-black">
+                    Explore Communities
+                </h1>
+                <p className="text-xl font-medium tracking-tight text-black/60 max-w-2xl uppercase">
+                    Engage with the network. Competitions / Achievements / Nodes.
+                </p>
             </div>
 
             <AchievementsList unlocked={achievements} />
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-12 lg:grid-cols-2">
                 <LeaderboardCard users={leaderboard} />
                 <ReferralCard />
             </div>

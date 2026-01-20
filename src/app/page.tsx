@@ -4,7 +4,6 @@ import { Hero } from "@/components/landing/hero"
 
 import { FeatureGrid } from "@/components/landing/feature-grid"
 
-import { CommunitySection } from "@/components/landing/community-section"
 import { AnalyticsPreview } from "@/components/landing/analytics-preview"
 import { LivePriceIntelligence } from "@/components/landing/live-price-intelligence"
 
@@ -26,7 +25,6 @@ export default function Home() {
 
             <FeatureGrid />
 
-            <CommunitySection />
             <AnalyticsPreview />
             <LivePriceIntelligence />
 

@@ -31,57 +31,57 @@ export default function AnalyticsPage() {
     const { summary, charts, recentActivity } = data
 
     return (
-        <div className="container py-8 space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="container py-12 space-y-12 max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b-4 border-black pb-6">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Financial Analytics</h1>
-                    <p className="text-muted-foreground">
-                        Track your spending, categories, and shopping habits.
+                    <h1 className="text-6xl font-black tracking-tighter uppercase mb-2">Financial <br /> Analytics</h1>
+                    <p className="text-black/60 font-bold uppercase tracking-widest text-sm max-w-md">
+                        Ledger analysis of spending categories and shopping habits.
                     </p>
                 </div>
                 <ExportControls data={data} />
             </div>
 
             {/* Metrics Cards */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Spent</CardTitle>
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                <Card className="rounded-none border-black shadow-none transition-all hover:bg-black/5">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 border-b border-black/10 mx-4 px-0 pt-4">
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider">Total Spent</CardTitle>
+                        <DollarSign className="h-4 w-4 text-black" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">${summary.totalSpent.toFixed(2)}</div>
-                        <p className="text-xs text-muted-foreground">+2.5% from last month</p>
+                    <CardContent className="pt-4">
+                        <div className="text-3xl font-black tracking-tighter">${summary.totalSpent.toFixed(2)}</div>
+                        <p className="text-xs text-black/60 font-mono mt-1 font-bold">+2.5% FROM LAST MONTH</p>
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Estimated Settings</CardTitle>
-                        <PiggyBank className="h-4 w-4 text-green-600" />
+                <Card className="rounded-none border-black shadow-none transition-all hover:bg-black/5">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 border-b border-black/10 mx-4 px-0 pt-4">
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider">Estimated Savings</CardTitle>
+                        <PiggyBank className="h-4 w-4 text-black" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-green-600">${summary.totalSaved.toFixed(2)}</div>
-                        <p className="text-xs text-muted-foreground">You saved ~12% on deals</p>
+                    <CardContent className="pt-4">
+                        <div className="text-3xl font-black tracking-tighter text-black">${summary.totalSaved.toFixed(2)}</div>
+                        <p className="text-xs text-black/60 font-mono mt-1 font-bold">SAVED ~12% ON DEALS</p>
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Receipts</CardTitle>
-                        <FileText className="h-4 w-4 text-muted-foreground" />
+                <Card className="rounded-none border-black shadow-none transition-all hover:bg-black/5">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 border-b border-black/10 mx-4 px-0 pt-4">
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider">Receipts</CardTitle>
+                        <FileText className="h-4 w-4 text-black" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{summary.dealCount}</div>
-                        <p className="text-xs text-muted-foreground">Scanned receipts</p>
+                    <CardContent className="pt-4">
+                        <div className="text-3xl font-black tracking-tighter">{summary.dealCount}</div>
+                        <p className="text-xs text-black/60 font-mono mt-1 font-bold">SCANNED RECEIPTS</p>
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Avg. Transaction</CardTitle>
-                        <Wallet className="h-4 w-4 text-muted-foreground" />
+                <Card className="rounded-none border-black shadow-none transition-all hover:bg-black/5">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 border-b border-black/10 mx-4 px-0 pt-4">
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider">Avg. Transaction</CardTitle>
+                        <Wallet className="h-4 w-4 text-black" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">${(summary.totalSpent / summary.dealCount).toFixed(2)}</div>
-                        <p className="text-xs text-muted-foreground">Per shopping trip</p>
+                    <CardContent className="pt-4">
+                        <div className="text-3xl font-black tracking-tighter">${(summary.totalSpent / Math.max(summary.dealCount, 1)).toFixed(2)}</div>
+                        <p className="text-xs text-black/60 font-mono mt-1 font-bold">PER SHOPPING TRIP</p>
                     </CardContent>
                 </Card>
             </div>
@@ -92,21 +92,20 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Recent Table */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Recent Transactions</CardTitle>
-                    <CardDescription>Your last 5 purchases</CardDescription>
+            <Card className="rounded-none border-black shadow-none">
+                <CardHeader className="border-b border-black pb-4">
+                    <CardTitle className="uppercase font-black tracking-tight text-xl">Recent Transactions</CardTitle>
+                    <CardDescription className="uppercase text-xs font-bold text-black/60 tracking-wider">Five most recent inputs</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-6">
                     <div className="space-y-4">
                         {recentActivity.map((activity: any) => (
-                            <div key={activity.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
+                            <div key={activity.id} className="flex items-center justify-between border-b border-black/10 pb-4 last:border-0 last:pb-0 hover:bg-black/5 p-2 transition-colors -mx-2 px-4">
                                 <div className="space-y-1">
-                                    <p className="text-sm font-medium leading-none">{activity.store}</p>
-                                    <p className="text-xs text-muted-foreground">{activity.date}</p>
+                                    <p className="text-sm font-bold uppercase tracking-tight">{activity.store}</p>
+                                    <p className="text-xs text-black/50 font-mono">{activity.date}</p>
                                 </div>
-                                <div className="font-medium flex items-center">
-                                    <ArrowDown className="mr-1 h-3 w-3 text-red-500" />
+                                <div className="font-bold flex items-center font-mono text-lg">
                                     ${activity.amount.toFixed(2)}
                                 </div>
                             </div>

@@ -13,12 +13,12 @@ const ALL_ACHIEVEMENTS = [
 export function AchievementsList({ unlocked }: { unlocked: string[] }) {
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Achievements</CardTitle>
-                <CardDescription>Badges you've earned</CardDescription>
+        <Card className="border-black rounded-none shadow-none">
+            <CardHeader className="border-b border-black pb-4">
+                <CardTitle className="uppercase tracking-tighter font-black text-2xl">Achievements</CardTitle>
+                <CardDescription className="uppercase text-xs tracking-widest font-bold text-black/60">Badges & Protocol Status</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {ALL_ACHIEVEMENTS.map(ach => {
                         const isUnlocked = unlocked.includes(ach.id)
@@ -27,16 +27,16 @@ export function AchievementsList({ unlocked }: { unlocked: string[] }) {
                         return (
                             <div
                                 key={ach.id}
-                                className={`flex flex-col items-center p-4 rounded-xl border text-center transition-all ${isUnlocked
-                                        ? 'bg-yellow-50 border-yellow-200 text-yellow-900'
-                                        : 'bg-gray-50 border-gray-100 text-gray-400 grayscale'
+                                className={`flex flex-col items-center p-4 border transition-all rounded-none group ${isUnlocked
+                                    ? 'bg-black text-white border-black'
+                                    : 'bg-white border-black text-black'
                                     }`}
                             >
-                                <div className={`p-3 rounded-full mb-2 ${isUnlocked ? 'bg-yellow-100' : 'bg-gray-200'}`}>
+                                <div className={`p-3 mb-3 border-2 ${isUnlocked ? 'bg-white text-black border-white' : 'bg-transparent border-black'}`}>
                                     <Icon className="h-6 w-6" />
                                 </div>
-                                <h3 className="font-semibold text-sm">{ach.name}</h3>
-                                <p className="text-xs mt-1 opacity-80">{ach.description}</p>
+                                <h3 className="font-bold text-sm uppercase tracking-tight">{ach.name}</h3>
+                                <p className={`text-xs mt-1 text-center font-mono ${isUnlocked ? 'text-white/80' : 'text-black/80'}`}>{ach.description}</p>
                             </div>
                         )
                     })}
