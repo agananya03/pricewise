@@ -44,7 +44,7 @@ export function CategoryBreakdown({ data }: { data?: CategoryData[] }) {
                                 ))}
                             </Pie>
                             <Tooltip
-                                formatter={(value: number) => `$${value.toFixed(2)}`}
+                                formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Value"]}
                                 contentStyle={{ borderRadius: '0px', border: '1px solid black', boxShadow: 'none' }}
                                 itemStyle={{ color: 'black', fontFamily: 'monospace', fontWeight: 'bold' }}
                             />
