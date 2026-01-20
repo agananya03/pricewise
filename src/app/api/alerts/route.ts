@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth"
 export async function POST(req: NextRequest) {
     try {
         const session = await auth()
-        if (!session?.user) {
+        if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
@@ -21,11 +21,14 @@ export async function POST(req: NextRequest) {
 
         const alert = await prisma.priceAlert.create({
             data: {
-                userId: session.user.id,
+                user: {
+                    connect: {
+                        id: session.user.id
+                    }
+                },
                 productId,
                 targetPrice,
-                condition, // "BELOW" or "ABOVE" - make sure this matches enum in schema?
-                // Schema has AlertCondition enum: BELOW, ABOVE, CHANGE, DEAL
+                condition: condition,
             }
         })
 
