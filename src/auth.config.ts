@@ -13,9 +13,7 @@ export default {
             const isOnDashboard = nextUrl.pathname.startsWith("/") &&
                 nextUrl.pathname !== "/" &&
                 !nextUrl.pathname.startsWith("/api") &&
-                !nextUrl.pathname.startsWith("/login") &&
-                !nextUrl.pathname.startsWith("/community") &&
-                !nextUrl.pathname.startsWith("/receipt")
+                !nextUrl.pathname.startsWith("/login")
 
             if (isOnDashboard) {
                 if (isLoggedIn) return true
