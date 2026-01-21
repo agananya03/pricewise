@@ -10,7 +10,12 @@ export default {
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user
-            const isOnDashboard = nextUrl.pathname.startsWith("/") && nextUrl.pathname !== "/" && !nextUrl.pathname.startsWith("/api") && !nextUrl.pathname.startsWith("/login")
+            const isOnDashboard = nextUrl.pathname.startsWith("/") &&
+                nextUrl.pathname !== "/" &&
+                !nextUrl.pathname.startsWith("/api") &&
+                !nextUrl.pathname.startsWith("/login") &&
+                !nextUrl.pathname.startsWith("/community") &&
+                !nextUrl.pathname.startsWith("/receipt")
 
             if (isOnDashboard) {
                 if (isLoggedIn) return true

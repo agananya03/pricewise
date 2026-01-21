@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Barcode, FileText, Home, Settings, ShoppingCart, Map as MapIcon, PieChart, CheckSquare } from "lucide-react"
+import { Barcode, FileText, Home, Settings, ShoppingCart, Map as MapIcon, PieChart, CheckSquare, Users } from "lucide-react"
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -17,6 +17,11 @@ export function Sidebar({ className }: SidebarProps) {
             href: "/dashboard",
             label: "Dashboard",
             icon: Home,
+        },
+        {
+            href: "/community",
+            label: "Community",
+            icon: Users,
         },
         {
             href: "/prices/compare",
@@ -66,7 +71,7 @@ export function Sidebar({ className }: SidebarProps) {
             <div className="space-y-4 py-4">
                 <div className="px-3 py-2">
                     <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                        Pricewise
+                        <Link href="/">Pricewise</Link>
                     </h2>
                     <div className="space-y-1">
                         {routes.map((route) => (
