@@ -21,7 +21,7 @@ export default {
             } else if (isLoggedIn) {
                 // Redirect logged-in users away from login page
                 if (nextUrl.pathname === "/login") {
-                    return Response.redirect(new URL("/dashboard", nextUrl))
+                    return Response.redirect(new URL("/", nextUrl))
                 }
             }
             return true

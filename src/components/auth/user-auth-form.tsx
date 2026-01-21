@@ -15,7 +15,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const login = async () => {
         setIsLoading(true)
         try {
-            await signIn("google")
+            await signIn("google", { callbackUrl: "/" })
         } catch (error) {
             console.error(error)
         } finally {
