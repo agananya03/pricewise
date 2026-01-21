@@ -45,14 +45,14 @@ export default function ReceiptPage() {
 
     return (
         <div className="container max-w-2xl py-12 space-y-8">
-            <div className="flex items-center justify-between border-b border-black pb-6">
+            <div className="flex items-center justify-between border-b border-foreground pb-6">
                 <div>
                     <h1 className="text-4xl font-black tracking-tighter uppercase mb-2">Receipt Scanner</h1>
-                    <p className="text-black/60 font-medium uppercase tracking-wide text-xs">
+                    <p className="text-muted-foreground font-medium uppercase tracking-wide text-xs">
                         Upload a receipt to automatically extract prices and products.
                     </p>
                 </div>
-                <Button variant="outline" asChild className="rounded-none border-black hover:bg-black hover:text-white uppercase font-bold tracking-wider">
+                <Button variant="outline" asChild className="rounded-none border-foreground hover:bg-foreground hover:text-background uppercase font-bold tracking-wider">
                     <Link href="/receipt/history">
                         <History className="mr-2 h-4 w-4" />
                         View History
