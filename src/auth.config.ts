@@ -15,11 +15,7 @@ export default {
                 !nextUrl.pathname.startsWith("/api") &&
                 !nextUrl.pathname.startsWith("/login") &&
                 !nextUrl.pathname.startsWith("/community") &&
-                !nextUrl.pathname.startsWith("/receipt") &&
-                !nextUrl.pathname.startsWith("/analytics") &&
-                !nextUrl.pathname.startsWith("/prices") &&
-                !nextUrl.pathname.startsWith("/scan") &&
-                !nextUrl.pathname.startsWith("/stores")
+                !nextUrl.pathname.startsWith("/receipt")
 
             if (isOnDashboard) {
                 if (isLoggedIn) return true
