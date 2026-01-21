@@ -26,16 +26,16 @@ export default function ScanPage() {
 
     return (
         <div className="container mx-auto max-w-lg p-6 space-y-6">
-            <Card className="rounded-none border-black shadow-none">
-                <CardHeader className="border-b border-black pb-4">
+            <Card className="rounded-none border-foreground shadow-none">
+                <CardHeader className="border-b border-foreground pb-4">
                     <CardTitle className="uppercase font-black tracking-tighter text-3xl">Universal Scanner</CardTitle>
-                    <CardDescription className="uppercase font-bold text-xs tracking-widest text-black/60">
+                    <CardDescription className="uppercase font-bold text-xs tracking-widest text-muted-foreground">
                         Input Optical Data
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center gap-6 pt-6">
                     {isScanning ? (
-                        <div className="w-full aspect-[4/3] bg-black relative border-4 border-black">
+                        <div className="w-full aspect-[4/3] bg-black relative border-4 border-foreground">
                             <BarcodeScanner
                                 onDetected={handleDetected}
                                 className="w-full h-full opacity-80"
@@ -51,12 +51,12 @@ export default function ScanPage() {
                         </div>
                     ) : (
                         <div className="flex flex-col items-center gap-4 w-full">
-                            <div className="text-center p-8 bg-black/5 border border-black w-full">
-                                <p className="text-xs uppercase font-bold tracking-widest text-black/60 mb-2">Scanned Code</p>
+                            <div className="text-center p-8 bg-foreground/5 border border-foreground w-full">
+                                <p className="text-xs uppercase font-bold tracking-widest text-muted-foreground mb-2">Scanned Code</p>
                                 <p className="text-4xl font-mono font-black tracking-widest">{lastScanned}</p>
                             </div>
                             <div className="flex gap-4 w-full">
-                                <Button onClick={resetScan} variant="outline" className="flex-1 rounded-none border-black hover:bg-black hover:text-white uppercase font-bold tracking-wider h-12">
+                                <Button onClick={resetScan} variant="outline" className="flex-1 rounded-none border-foreground hover:bg-foreground hover:text-background uppercase font-bold tracking-wider h-12">
                                     Scan Again
                                 </Button>
                                 <Button

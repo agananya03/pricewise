@@ -83,9 +83,9 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
 
     return (
         <div className="container py-8 space-y-8">
-            <div className="border-b-4 border-black pb-4">
+            <div className="border-b-4 border-foreground pb-4">
                 <h1 className="text-5xl font-black tracking-tighter uppercase mb-1">Price Comparison</h1>
-                <p className="text-black/60 font-medium uppercase tracking-widest text-xs">Market Intelligence & Analysis</p>
+                <p className="text-muted-foreground font-medium uppercase tracking-widest text-xs">Market Intelligence & Analysis</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-12">
@@ -93,10 +93,10 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                 <div className="md:col-span-4 space-y-4">
                     <LocationFilter />
 
-                    <Card className="rounded-none border-black shadow-none">
-                        <CardHeader className="border-b border-black pb-3">
+                    <Card className="rounded-none border-foreground shadow-none">
+                        <CardHeader className="border-b border-foreground pb-3">
                             <CardTitle className="text-lg uppercase font-black tracking-tight">Recent Products</CardTitle>
-                            <CardDescription className="uppercase text-xs font-bold text-black/60 tracking-wider">Identified Inventory</CardDescription>
+                            <CardDescription className="uppercase text-xs font-bold text-muted-foreground tracking-wider">Identified Inventory</CardDescription>
                         </CardHeader>
                         <CardContent className="grid gap-0 p-0">
                             {products.length === 0 ? (
@@ -108,13 +108,13 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                                     <Button
                                         key={product.id}
                                         variant="ghost"
-                                        className={`w-full justify-start h-auto py-4 px-4 rounded-none border-b last:border-0 border-black/10 hover:bg-black hover:text-white transition-all group ${productId === product.id ? "bg-black text-white" : ""}`}
+                                        className={`w-full justify-start h-auto py-4 px-4 rounded-none border-b last:border-0 border-foreground/10 hover:bg-foreground hover:text-background transition-all group ${productId === product.id ? "bg-foreground text-background" : ""}`}
                                         asChild
                                     >
                                         <Link href={`/prices/compare?productId=${product.id}`}>
                                             <div className="flex flex-col items-start gap-1 w-full overflow-hidden">
                                                 <div className="font-bold uppercase tracking-tight truncate w-full">{product.name}</div>
-                                                <div className={`text-[10px] font-mono uppercase flex items-center gap-2 ${productId === product.id ? "text-white/60" : "text-black/40 group-hover:text-white/60"}`}>
+                                                <div className={`text-[10px] font-mono uppercase flex items-center gap-2 ${productId === product.id ? "text-background/60" : "text-muted-foreground group-hover:text-background/60"}`}>
                                                     <ShoppingBag className="w-3 h-3" />
                                                     {product._count.prices} prices found
                                                 </div>
@@ -132,11 +132,11 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
                 <div className="md:col-span-8">
                     {comparisonData && selectedProduct ? (
                         <div className="space-y-6">
-                            <div className="border-b-2 border-black pb-6">
+                            <div className="border-b-2 border-foreground pb-6">
                                 <h2 className="text-4xl font-black uppercase tracking-tighter mb-2">{selectedProduct.name}</h2>
-                                <p className="text-black/60 font-bold uppercase tracking-widest text-xs">Category // {selectedProduct.category}</p>
+                                <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">Category // {selectedProduct.category}</p>
                                 {locationName && (
-                                    <p className="text-xs font-bold font-mono text-black mt-2 flex items-center uppercase">
+                                    <p className="text-xs font-bold font-mono text-foreground mt-2 flex items-center uppercase">
                                         <MapPin className="w-3 h-3 mr-2" />
                                         Targeting: {locationName}
                                     </p>
