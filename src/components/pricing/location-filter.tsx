@@ -53,8 +53,25 @@ export function LocationFilter() {
                 setActive(true)
             },
             (error) => {
-                console.error(error)
-                toast.error("Unable to retrieve your location")
+                console.error("Geolocation error:", error)
+                let errorMessage = "Unable to retrieve your location"
+
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage = "Location permission denied. Please enable it in your browser settings."
+                        break
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage = "Location information is unavailable."
+                        break
+                    case error.TIMEOUT:
+                        errorMessage = "The request to get your location timed out."
+                        break
+                    default:
+                        errorMessage = "An unknown error occurred getting your location."
+                        break
+                }
+
+                toast.error(errorMessage)
                 setLoading(false)
             }
         )
