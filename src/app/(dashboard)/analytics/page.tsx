@@ -50,7 +50,7 @@ export default function AnalyticsPage() {
                         <DollarSign className="h-4 w-4 text-foreground" />
                     </CardHeader>
                     <CardContent className="pt-4">
-                        <div className="text-3xl font-black tracking-tighter">${summary.totalSpent.toFixed(2)}</div>
+                        <div className="text-3xl font-black tracking-tighter">₹{summary.totalSpent.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground font-mono mt-1 font-bold">+2.5% FROM LAST MONTH</p>
                     </CardContent>
                 </Card>
@@ -60,7 +60,7 @@ export default function AnalyticsPage() {
                         <PiggyBank className="h-4 w-4 text-foreground" />
                     </CardHeader>
                     <CardContent className="pt-4">
-                        <div className="text-3xl font-black tracking-tighter text-foreground">${summary.totalSaved.toFixed(2)}</div>
+                        <div className="text-3xl font-black tracking-tighter text-foreground">₹{summary.totalSaved.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground font-mono mt-1 font-bold">SAVED ~12% ON DEALS</p>
                     </CardContent>
                 </Card>
@@ -80,7 +80,7 @@ export default function AnalyticsPage() {
                         <Wallet className="h-4 w-4 text-foreground" />
                     </CardHeader>
                     <CardContent className="pt-4">
-                        <div className="text-3xl font-black tracking-tighter">${(summary.totalSpent / Math.max(summary.dealCount, 1)).toFixed(2)}</div>
+                        <div className="text-3xl font-black tracking-tighter">₹{(summary.totalSpent / Math.max(summary.dealCount, 1)).toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground font-mono mt-1 font-bold">PER SHOPPING TRIP</p>
                     </CardContent>
                 </Card>
@@ -106,7 +106,7 @@ export default function AnalyticsPage() {
                                     <p className="text-xs text-muted-foreground font-mono">{activity.date}</p>
                                 </div>
                                 <div className="font-bold flex items-center font-mono text-lg">
-                                    ${activity.amount.toFixed(2)}
+                                    ₹{activity.amount.toFixed(2)}
                                 </div>
                             </div>
                         ))}

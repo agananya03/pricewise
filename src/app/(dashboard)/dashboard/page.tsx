@@ -17,8 +17,8 @@ export default function DashboardPage() {
             .then(res => res.json())
             .then(data => {
                 setStats({
-                    saved: data.totalSaved || 124.50, // Fallback for demo
-                    total: data.totalSpent || 450.20,
+                    saved: data.totalSaved || 10450.00, // Fallback for demo
+                    total: data.totalSpent || 38500.20,
                     items: data.totalItems || 15
                 })
                 setLoading(false)
@@ -51,7 +51,7 @@ export default function DashboardPage() {
                         <TrendingDown className="h-4 w-4 text-green-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-green-600">${stats.saved.toFixed(2)}</div>
+                        <div className="text-2xl font-bold text-green-600">₹{stats.saved.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">+20.1% from last month</p>
                     </CardContent>
                 </Card>
@@ -61,7 +61,7 @@ export default function DashboardPage() {
                         <ShoppingBag className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">${stats.total.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">₹{stats.total.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">+12% from last month</p>
                     </CardContent>
                 </Card>
@@ -120,7 +120,7 @@ export default function DashboardPage() {
                                         </div>
                                     </div>
                                     <div className="font-medium">
-                                        $4.99
+                                        ₹399.00
                                     </div>
                                 </div>
                             ))}

@@ -10,7 +10,7 @@ interface SpendingChartProps {
 
 export function SpendingChart({ data, labels }: SpendingChartProps) {
     // Default Demo Data if no props provided
-    const demoData = [120, 300, 240, 450, 380, 520]
+    const demoData = [12000, 30000, 24000, 45000, 38000, 52000]
     const demoLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
 
     const finalData = data || demoData
@@ -52,12 +52,12 @@ export function SpendingChart({ data, labels }: SpendingChartProps) {
                                 fontSize={12}
                                 tickLine={false}
                                 axisLine={false}
-                                tickFormatter={(value) => `$${value}`}
+                                tickFormatter={(value) => `₹${value}`}
                                 tick={{ fill: 'black', fontFamily: 'monospace' }}
                             />
                             <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} stroke="#000000" />
                             <Tooltip
-                                formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Spent"]}
+                                formatter={(value: any) => [`₹${Number(value).toFixed(2)}`, "Spent"]}
                                 contentStyle={{ borderRadius: '0px', border: '1px solid black', boxShadow: 'none' }}
                                 itemStyle={{ color: 'black', fontFamily: 'monospace', fontWeight: 'bold' }}
                             />

@@ -147,7 +147,7 @@ export function ShoppingListManager() {
                 <CardTitle className="flex justify-between items-center">
                     <span className="uppercase tracking-tighter text-2xl font-black">Shopping list</span>
                     <Badge variant="outline" className="text-lg rounded-none border-black border-2 px-3 py-1 font-mono font-bold">
-                        ${estimatedTotal.toFixed(2)}
+                        ₹{estimatedTotal.toFixed(2)}
                     </Badge>
                 </CardTitle>
                 <CardDescription className="text-black/60 font-medium uppercase tracking-wide text-xs mt-1">
@@ -188,7 +188,7 @@ export function ShoppingListManager() {
                             >
                                 <span className="font-bold uppercase tracking-tight">{p.name}</span>
                                 <span className="font-mono">
-                                    ${p.prices?.[0]?.amount.toFixed(2) || '?'}
+                                    ₹{p.prices?.[0]?.amount.toFixed(2) || '?'}
                                 </span>
                             </div>
                         ))}
@@ -220,7 +220,7 @@ export function ShoppingListManager() {
                                 </span>
                                 {item.product?.prices?.[0] && (
                                     <span className={`text-xs block truncate font-mono mt-1 ${item.checked ? 'text-black/30' : 'text-black/60'}`}>
-                                        BEST: ${item.product.prices[0].amount.toFixed(2)}
+                                        BEST: ₹{item.product.prices[0].amount.toFixed(2)}
                                         {item.product.prices[0].store && ` @ ${item.product.prices[0].store.name}`}
                                     </span>
                                 )}

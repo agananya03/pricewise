@@ -17,7 +17,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
             <div className="bg-background border rounded-lg shadow-sm p-3 text-sm">
                 <p className="font-medium mb-1">{label}</p>
                 <p className="text-primary font-bold">
-                    ${payload[0].value.toFixed(2)}
+                    ₹{payload[0].value.toFixed(2)}
                 </p>
                 <p className="text-muted-foreground text-xs mt-1">
                     {payload[0].payload.store}
@@ -57,7 +57,7 @@ export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
                             <YAxis
                                 tickLine={false}
                                 axisLine={false}
-                                tickFormatter={(value) => `$${value}`}
+                                tickFormatter={(value) => `₹${value}`}
                                 fontSize={10}
                                 stroke="#888888"
                                 domain={['dataMin - 1', 'dataMax + 1']}

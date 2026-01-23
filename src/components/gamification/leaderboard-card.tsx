@@ -39,7 +39,7 @@ export function LeaderboardCard({ users }: { users: User[] }) {
                             <p className="text-sm font-bold uppercase tracking-tight text-black">{user.name || "Anonymous"}</p>
                         </div>
                         <div className="text-right">
-                            <p className="text-sm font-mono font-bold text-black border-b-2 border-black/10 pb-0.5">${user.totalSaved.toFixed(0)}</p>
+                            <p className="text-sm font-mono font-bold text-black border-b-2 border-black/10 pb-0.5">₹{user.totalSaved.toFixed(0)}</p>
                         </div>
                     </div>
                 ))}

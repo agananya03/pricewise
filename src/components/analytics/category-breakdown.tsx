@@ -12,10 +12,10 @@ interface CategoryData {
 
 export function CategoryBreakdown({ data }: { data?: CategoryData[] }) {
     const defaultData: CategoryData[] = [
-        { name: "Groceries", value: 450, fill: "#000000" },
-        { name: "Electronics", value: 300, fill: "#404040" },
-        { name: "Clothing", value: 150, fill: "#737373" },
-        { name: "Others", value: 100, fill: "#a3a3a3" }
+        { name: "Groceries", value: 45000, fill: "#000000" },
+        { name: "Electronics", value: 30000, fill: "#404040" },
+        { name: "Clothing", value: 15000, fill: "#737373" },
+        { name: "Others", value: 10000, fill: "#a3a3a3" }
     ]
 
     const chartData = data && data.length > 0 ? data : defaultData
@@ -44,7 +44,7 @@ export function CategoryBreakdown({ data }: { data?: CategoryData[] }) {
                                 ))}
                             </Pie>
                             <Tooltip
-                                formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Value"]}
+                                formatter={(value: any) => [`₹${Number(value).toFixed(2)}`, "Value"]}
                                 contentStyle={{ borderRadius: '0px', border: '1px solid black', boxShadow: 'none' }}
                                 itemStyle={{ color: 'black', fontFamily: 'monospace', fontWeight: 'bold' }}
                             />

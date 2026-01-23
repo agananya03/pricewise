@@ -39,13 +39,13 @@ export function ShoppingListShowcase() {
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <span className="font-bold">$4.99</span>
+                                            <span className="font-bold">₹240</span>
                                             <span className="text-[10px] block font-bold text-red-500 group-hover:text-red-600">HIGH PRICE</span>
                                         </div>
                                     </div>
                                     <div className="mt-3 border-t border-dashed border-current/30 pt-2 flex items-center gap-2 text-xs">
                                         <MapPin className="h-3 w-3" />
-                                        <strong>TARGET:</strong> $2.99 (-$2.00)
+                                        <strong>TARGET:</strong> ₹190 (-₹50)
                                     </div>
                                 </div>
 
@@ -59,7 +59,7 @@ export function ShoppingListShowcase() {
                                             <div className="line-through text-sm">Bread (Wheat)</div>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-sm">$2.49</span>
+                                            <span className="text-sm">₹45</span>
                                         </div>
                                     </div>
                                 </div>
@@ -72,7 +72,7 @@ export function ShoppingListShowcase() {
                                             <div className="font-bold uppercase text-sm">Olive Oil</div>
                                         </div>
                                         <div className="text-right">
-                                            <span className="font-bold">$6.49</span>
+                                            <span className="font-bold">₹850</span>
                                             <span className="text-[10px] block font-bold text-white group-hover:text-black bg-white group-hover:bg-black px-1 mt-1">DROP: 28%</span>
                                         </div>
                                     </div>
@@ -80,8 +80,8 @@ export function ShoppingListShowcase() {
 
                                 {/* Summary */}
                                 <div className="mt-8 pt-4 border-t-2 border-white flex items-center justify-between text-sm uppercase font-bold text-white">
-                                    <span>Est. Total: $22.46</span>
-                                    <span className="bg-white text-black px-3 py-1">Save $3.50</span>
+                                    <span>Est. Total: ₹1,085</span>
+                                    <span className="bg-white text-black px-3 py-1">Save ₹250</span>
                                 </div>
                             </div>
                         </div>

@@ -89,7 +89,7 @@ export function Features() {
                                         <span className="font-medium text-gray-900 dark:text-white">Your Store</span>
                                     </div>
                                     <div className="text-right">
-                                        <div className="font-bold text-xl text-red-600">$4.99</div>
+                                        <div className="font-bold text-xl text-red-600">₹499</div>
                                         <div className="text-xs text-red-500 font-medium">23% ABOVE AVG ⚠️</div>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@ export function Features() {
                                         <span className="font-medium text-gray-600 dark:text-gray-300">Market Average</span>
                                     </div>
                                     <div className="text-right">
-                                        <div className="font-bold text-xl text-gray-700 dark:text-gray-300">$3.85</div>
+                                        <div className="font-bold text-xl text-gray-700 dark:text-gray-300">₹380</div>
                                     </div>
                                 </div>
 
@@ -120,7 +120,7 @@ export function Features() {
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <div className="font-bold text-2xl text-green-600">$2.99</div>
+                                        <div className="font-bold text-2xl text-green-600">₹299</div>
                                         <div className="text-xs text-green-600 font-medium bg-green-100 px-2 py-0.5 rounded-full inline-block">Best Deal</div>
                                     </div>
                                 </div>

@@ -23,18 +23,18 @@ export function Hero() {
                         </h1>
 
                         <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto md:mx-0 font-light leading-relaxed border-l-4 border-white pl-6">
-                            Scan any barcode or receipt. Instant fair deal analysis. Join <span className="font-bold text-white">100,000+ shoppers</span> saving <span className="font-bold text-white">$2,400/year</span>.
+                            Scan any barcode or receipt. Instant fair deal analysis. Join <span className="font-bold text-white">100,000+ shoppers</span> saving <span className="font-bold text-white">₹24,000/year</span>.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-8">
                             <Link href="/scan">
-                                <Button size="lg" className="bg-white text-black hover:bg-gray-200 text-lg h-14 px-8 rounded-none border-2 border-white uppercase font-bold tracking-widest shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                                <Button size="lg" className="w-56 bg-white text-black hover:bg-gray-200 text-lg h-14 px-8 rounded-none border-2 border-white uppercase font-bold tracking-widest transition-all">
                                     <ScanBarcode className="mr-2 h-5 w-5" />
                                     Scan Item
                                 </Button>
                             </Link>
                             <Link href="/login">
-                                <Button size="lg" variant="outline" className="bg-transparent text-white hover:bg-white hover:text-black text-lg h-14 px-8 rounded-none border-2 border-white uppercase font-bold tracking-widest transition-all">
+                                <Button size="lg" variant="outline" className="w-56 bg-transparent text-white hover:bg-white hover:text-black text-lg h-14 px-8 rounded-none border-2 border-white uppercase font-bold tracking-widest transition-all">
                                     Get Started
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
@@ -75,7 +75,7 @@ export function Hero() {
                         <div className="absolute top-40 -right-4 bg-black border border-white p-4 w-64 z-20 shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]">
                             <div className="font-mono text-xs text-white mb-2 border-b border-white/20 pb-2">ALERT: OVERPAYING</div>
                             <div className="flex justify-between items-end">
-                                <div className="text-3xl font-black text-white">$4.99</div>
+                                <div className="text-3xl font-black text-white">₹199</div>
                                 <div className="text-xs text-red-500 font-bold bg-white px-1">+23%</div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@ export function Hero() {
                             <div className="flex justify-between items-end">
                                 <div>
                                     <div className="text-xs font-bold">FOUND AT TARGET</div>
-                                    <div className="text-3xl font-black">$2.99</div>
+                                    <div className="text-3xl font-black">₹160</div>
                                 </div>
                                 <CheckCircle className="h-6 w-6" />
                             </div>

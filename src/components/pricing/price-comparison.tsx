@@ -85,18 +85,18 @@ export function PriceComparison({ comparison }: PriceComparisonProps) {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm text-muted-foreground">Current</p>
-                                <p className="text-2xl font-bold">${currentPrice.toFixed(2)}</p>
+                                <p className="text-2xl font-bold">₹{currentPrice.toFixed(2)}</p>
                             </div>
                             <div className="text-right">
                                 <p className="text-sm text-muted-foreground">Market Average</p>
-                                <p className="text-2xl font-bold">${stats.avg.toFixed(2)}</p>
+                                <p className="text-2xl font-bold">₹{stats.avg.toFixed(2)}</p>
                             </div>
                         </div>
 
                         <div className="space-y-2">
                             <div className="flex justify-between text-xs text-muted-foreground">
-                                <span>${stats.min.toFixed(2)} (Best)</span>
-                                <span>${stats.max.toFixed(2)} (High)</span>
+                                <span>₹{stats.min.toFixed(2)} (Best)</span>
+                                <span>₹{stats.max.toFixed(2)} (High)</span>
                             </div>
                             <Progress value={percent} className="h-2" />
                         </div>

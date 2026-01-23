@@ -11,7 +11,7 @@ export function StatsBar() {
                     <div className="text-center space-y-2">
                         <div className="flex items-center justify-center gap-2 text-white font-black text-2xl md:text-4xl tracking-tighter">
                             <TrendingUp className="h-6 w-6" />
-                            $12.4M
+                            ₹12.4M
                         </div>
                         <p className="text-xs text-gray-400 font-mono uppercase tracking-widest">Saved Global</p>
                     </div>

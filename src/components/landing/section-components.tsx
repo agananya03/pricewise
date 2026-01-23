@@ -19,7 +19,7 @@ export function Testimonials() {
                                 <div className="flex gap-1">
                                     {[1, 2, 3, 4, 5].map(s => <Star key={s} className="h-4 w-4 fill-yellow-400 text-yellow-400" />)}
                                 </div>
-                                <p className="text-gray-600 dark:text-gray-300 italic">"I discovered I was overpaying $8 for olive oil! PriceWise saved me $430 in just 3 months. It's an absolute game changer."</p>
+                                <p className="text-gray-600 dark:text-gray-300 italic">"I discovered I was overpaying ₹200 for olive oil! PriceWise saved me ₹12,000 in just 3 months. It's an absolute game changer."</p>
                                 <div className="flex items-center gap-4 pt-4">
                                     <Avatar>
                                         <AvatarImage src={`https://i.pravatar.cc/150?u=${i}`} />
@@ -30,7 +30,7 @@ export function Testimonials() {
                                         <div className="text-xs text-gray-500">Chicago, IL</div>
                                     </div>
                                     <div className="ml-auto bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">
-                                        Saved $430
+                                        Saved ₹12,000
                                     </div>
                                 </div>
                             </CardContent>
@@ -88,7 +88,7 @@ export function Pricing() {
                             <Badge variant="secondary" className="mb-4 mx-auto">Most Popular</Badge>
                             <CardTitle className="text-2xl">Free Tier</CardTitle>
                             <CardDescription>Perfect for casual shoppers</CardDescription>
-                            <div className="text-4xl font-bold mt-4">$0<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
+                            <div className="text-4xl font-bold mt-4">₹0<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <ul className="space-y-3 text-sm">
@@ -110,7 +110,7 @@ export function Pricing() {
                             <div className="absolute top-0 left-0 right-0 bg-purple-600 text-white text-xs font-bold py-1 text-center uppercase tracking-wider rounded-t-lg">Recommended</div>
                             <CardTitle className="text-2xl mt-4">Premium</CardTitle>
                             <CardDescription>Serious savings</CardDescription>
-                            <div className="text-4xl font-bold mt-4 text-purple-600">$4.99<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
+                            <div className="text-4xl font-bold mt-4 text-purple-600">₹199<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <ul className="space-y-3 text-sm">
@@ -132,7 +132,7 @@ export function Pricing() {
                         <CardHeader className="text-center pb-2">
                             <CardTitle className="text-2xl mt-8">Pro</CardTitle>
                             <CardDescription>For power users</CardDescription>
-                            <div className="text-4xl font-bold mt-4">$9.99<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
+                            <div className="text-4xl font-bold mt-4">₹499<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <ul className="space-y-3 text-sm">

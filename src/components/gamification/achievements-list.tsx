@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 
 const ALL_ACHIEVEMENTS = [
     { id: "FIRST_SCAN", name: "First Scan", description: "Scanned your first product", icon: Zap },
-    { id: "SAVER_100", name: "Century Saver", description: "Saved over $100", icon: Trophy },
+    { id: "SAVER_100", name: "Century Saver", description: "Saved over ₹10,000", icon: Trophy },
     { id: "DEAL_HUNTER", name: "Deal Hunter", description: "Found a 50% off deal", icon: ShoppingBag },
     { id: "REFERRAL_MASTER", name: "Community Builder", description: "Referred 5 friends", icon: Medal },
 ]

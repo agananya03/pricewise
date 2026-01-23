@@ -180,7 +180,7 @@ export function ReceiptReviewForm({ initialData, onSave, onCancel }: ReceiptRevi
                     </CardContent>
                     <CardFooter className="bg-muted/50 flex justify-between items-center py-4">
                         <div className="text-sm text-muted-foreground">
-                            Calculated Total: <span className="font-semibold text-foreground">${calculateTotal()}</span>
+                            Calculated Total: <span className="font-semibold text-foreground">₹{calculateTotal()}</span>
                         </div>
                         <FormField
                             control={form.control}

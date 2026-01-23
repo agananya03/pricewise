@@ -40,7 +40,7 @@ export function ReceiptHistoryList({ receipts }: ReceiptHistoryListProps) {
                             {receipt.store}
                         </CardTitle>
                         <Badge variant="secondary" className="font-mono">
-                            ${receipt.total.toFixed(2)}
+                            ₹{receipt.total.toFixed(2)}
                         </Badge>
                     </CardHeader>
                     <CardContent>
