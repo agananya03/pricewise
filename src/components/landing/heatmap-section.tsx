@@ -6,8 +6,12 @@ import { Button } from "@/components/ui/button"
 
 export function HeatmapSection() {
     const [location, setLocation] = useState("LOCATING...")
+    const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
-    useEffect(() => {
+    const fetchLocation = () => {
+        setLocation("LOCATING...")
+        setErrorMsg(null)
+
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const { latitude, longitude } = position.coords
@@ -17,7 +21,6 @@ export function HeatmapSection() {
                     if (data && data.address) {
                         const city = data.address.city || data.address.town || data.address.village || data.address.county || ""
                         const state = data.address.state || ""
-                        // Construct string, handle missing parts
                         const locString = [city, state].filter(Boolean).join(", ")
                         setLocation(locString.toUpperCase())
                     } else {
@@ -28,11 +31,25 @@ export function HeatmapSection() {
                 }
             }, (error) => {
                 console.error(error)
-                setLocation("LOCATION DENIED")
+                if (error.code === error.PERMISSION_DENIED) {
+                    setLocation("PERMISSION DENIED")
+                    setErrorMsg("Enable location in browser settings")
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    setLocation("UNAVAILABLE")
+                    setErrorMsg("GPS signal lost")
+                } else if (error.code === error.TIMEOUT) {
+                    setLocation("TIMEOUT")
+                } else {
+                    setLocation("LOCATION ERROR")
+                }
             })
         } else {
             setLocation("NOT SUPPORTED")
         }
+    }
+
+    useEffect(() => {
+        fetchLocation()
     }, [])
 
     return (
@@ -67,7 +84,15 @@ export function HeatmapSection() {
                     {/* Overlay */}
                     <div className="absolute bottom-6 left-6 bg-black px-6 py-4 border border-white text-left shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)]">
                         <div className="font-bold uppercase tracking-widest text-sm mb-1">15 Stores Tracked</div>
-                        <div className="text-gray-400 font-mono text-xs uppercase">{location}</div>
+                        <div className="flex items-center gap-2">
+                            <div className="text-gray-400 font-mono text-xs uppercase">{location}</div>
+                            {errorMsg && (
+                                <button onClick={fetchLocation} className="text-[10px] bg-white text-black px-2 py-0.5 font-bold hover:bg-gray-200">
+                                    RETRY
+                                </button>
+                            )}
+                        </div>
+                        {errorMsg && <div className="text-[10px] text-red-400 font-mono mt-1">{errorMsg}</div>}
                         <div className="flex flex-col gap-1 mt-3 text-[10px] font-mono text-gray-500 uppercase">
                             <span className="text-white">● 23 Great Deals</span>
                             <span className="text-gray-600">● 8 Overpriced</span>
