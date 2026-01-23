@@ -1,5 +1,6 @@
 
 import { NextRequest, NextResponse } from "next/server"
+import { parse, isValid } from "date-fns"
 
 export const dynamic = "force-dynamic"
 import { prisma } from "@/lib/prisma"
@@ -67,26 +68,55 @@ export async function POST(req: NextRequest) {
         }
 
         console.log("Creating prisma record...");
-        const receipt = await prisma.receipt.create({
-            data: {
-                userId: userId,
-                store,
-                date: date ? new Date(date) : new Date(),
-                total: total || 0,
-                imageUrl,
-                items: {
-                    create: items.map((item: any) => ({
-                        name: item.name,
-                        price: item.price,
-                        quantity: item.quantity
-                    }))
+        let parsedDate = new Date();
+        if (date) {
+            try {
+                // Try parsing DD/MM/YYYY
+                const parsed = parse(date, 'dd/MM/yyyy', new Date());
+                if (isValid(parsed)) {
+                    parsedDate = parsed;
+                } else {
+                    const standard = new Date(date);
+                    if (!isNaN(standard.getTime())) {
+                        parsedDate = standard;
+                    }
                 }
-            },
-            include: {
-                items: true
+            } catch (e) {
+                console.warn("Date parsing failed", e);
             }
-        })
+        }
+
+        // Use transaction to ensure both receipt is created and user stats are updated
+        const [receipt, updatedUser] = await prisma.$transaction([
+            prisma.receipt.create({
+                data: {
+                    userId: userId,
+                    store,
+                    date: parsedDate,
+                    total: total || 0,
+                    imageUrl,
+                    items: {
+                        create: items.map((item: any) => ({
+                            name: item.name,
+                            price: item.price,
+                            quantity: item.quantity
+                        }))
+                    }
+                },
+                include: {
+                    items: true
+                }
+            }),
+            prisma.user.update({
+                where: { id: userId },
+                data: {
+                    totalSaved: { increment: total || 0 },
+                    scanCount: { increment: 1 }
+                }
+            })
+        ]);
         console.log("Receipt saved successfully:", receipt.id);
+        console.log("User stats updated. New totalSaved:", updatedUser.totalSaved, "New scanCount:", updatedUser.scanCount);
 
         return NextResponse.json(receipt)
     } catch (error) {
