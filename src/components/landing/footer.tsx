@@ -7,7 +7,7 @@ export function Footer() {
     return (
         <footer className="bg-black text-gray-300 py-16 border-t border-white">
             <div className="container mx-auto px-4">
-                <div className="grid md:grid-cols-4 gap-12 mb-12">
+                <div className="grid md:grid-cols-3 gap-12 mb-12">
 
                     <div className="col-span-1 md:col-span-1">
                         <Link href="/" className="flex items-center gap-2 font-black text-xl text-white mb-6 uppercase tracking-wider">
@@ -31,14 +31,7 @@ export function Footer() {
                         </ul>
                     </div>
 
-                    <div>
-                        <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-sm">Community</h4>
-                        <ul className="space-y-3 text-sm font-mono">
-                            <li><Link href="/community" className="hover:text-white hover:underline decoration-white/50 underline-offset-4 transition-all">Leaderboard</Link></li>
-                            <li><Link href="/" className="hover:text-white hover:underline decoration-white/50 underline-offset-4 transition-all">Success Stories</Link></li>
-                            <li><Link href="/" className="hover:text-white hover:underline decoration-white/50 underline-offset-4 transition-all">Guidelines</Link></li>
-                        </ul>
-                    </div>
+
 
                     <div>
                         <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-sm">Legal</h4>

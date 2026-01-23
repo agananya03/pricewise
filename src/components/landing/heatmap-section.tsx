@@ -1,9 +1,40 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export function HeatmapSection() {
+    const [location, setLocation] = useState("LOCATING...")
+
+    useEffect(() => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const { latitude, longitude } = position.coords
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                    const data = await res.json()
+                    if (data && data.address) {
+                        const city = data.address.city || data.address.town || data.address.village || data.address.county || ""
+                        const state = data.address.state || ""
+                        // Construct string, handle missing parts
+                        const locString = [city, state].filter(Boolean).join(", ")
+                        setLocation(locString.toUpperCase())
+                    } else {
+                        setLocation("UNKNOWN LOCATION")
+                    }
+                } catch (e) {
+                    setLocation("LOCATION ERROR")
+                }
+            }, (error) => {
+                console.error(error)
+                setLocation("LOCATION DENIED")
+            })
+        } else {
+            setLocation("NOT SUPPORTED")
+        }
+    }, [])
+
     return (
         <section className="py-24 bg-black text-white overflow-hidden relative border-b border-white">
             <div className="container mx-auto px-4 relative z-10 text-center space-y-8">
@@ -36,7 +67,7 @@ export function HeatmapSection() {
                     {/* Overlay */}
                     <div className="absolute bottom-6 left-6 bg-black px-6 py-4 border border-white text-left shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)]">
                         <div className="font-bold uppercase tracking-widest text-sm mb-1">15 Stores Tracked</div>
-                        <div className="text-gray-400 font-mono text-xs uppercase">Mumbai, Maharashtra</div>
+                        <div className="text-gray-400 font-mono text-xs uppercase">{location}</div>
                         <div className="flex flex-col gap-1 mt-3 text-[10px] font-mono text-gray-500 uppercase">
                             <span className="text-white">● 23 Great Deals</span>
                             <span className="text-gray-600">● 8 Overpriced</span>
