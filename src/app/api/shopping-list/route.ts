@@ -12,7 +12,11 @@ export async function GET() {
         const lists = await prisma.shoppingList.findMany({
             include: {
                 items: {
-                    include: { product: true }
+                    include: {
+                        product: {
+                            include: { prices: true }
+                        }
+                    }
                 }
             }
         })

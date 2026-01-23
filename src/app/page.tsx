@@ -14,7 +14,7 @@ import { HeatmapSection } from "@/components/landing/heatmap-section"
 import { Footer } from "@/components/landing/footer"
 
 // Keep existing basic sections if needed, but we have better ones now.
-import { HowItWorks, FinalCTA } from "@/components/landing/section-components"
+import { HowItWorks } from "@/components/landing/section-components"
 
 
 export default function Home() {
@@ -33,7 +33,6 @@ export default function Home() {
 
 
             <HowItWorks />
-            <FinalCTA />
             <Footer />
         </main>
     )

@@ -133,7 +133,7 @@ export function BarcodeScanner({
         <div
             ref={scannerRef}
             className={cn(
-                "relative overflow-hidden rounded-lg bg-black group",
+                "relative overflow-hidden rounded-lg bg-black group [&_video]:w-full [&_video]:h-full [&_video]:object-cover",
                 className
             )}
         >

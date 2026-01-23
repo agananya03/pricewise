@@ -61,9 +61,9 @@ export function FeatureGrid() {
                                     <ListTodo className="h-10 w-10" />
                                 </div>
                                 <div className="space-y-2">
-                                    <h3 className="text-xl font-bold text-white uppercase tracking-wider">Shared Lists</h3>
+                                    <h3 className="text-xl font-bold text-white uppercase tracking-wider">Shopping List</h3>
                                     <p className="text-gray-400 text-sm font-mono leading-relaxed">
-                                        {'>'} Plan together.<br />{'>'} Sync instantly.<br />{'>'} Never forget.
+                                        {'>'} Add products.<br />{'>'} Track spend.<br />{'>'} Stay organized.
                                     </p>
                                 </div>
                             </CardContent>

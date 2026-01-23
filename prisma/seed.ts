@@ -43,7 +43,8 @@ async function main() {
 
     // Generate 15-20 price points across different stores and dates
     const numPrices = 15 + Math.floor(Math.random() * 6)
-    const basePrice = 3 + Math.random() * 5 // Base price between $3 and $8
+    // Base price between ₹50 and ₹400
+    const basePrice = 50 + Math.random() * 350
 
     for (let i = 0; i < numPrices; i++) {
       // Random variance +/- 20%

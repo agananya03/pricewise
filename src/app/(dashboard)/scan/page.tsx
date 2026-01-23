@@ -39,7 +39,7 @@ export default function ScanPage() {
                         </CardHeader>
                         <CardContent className="flex flex-col items-center gap-6 pt-6">
                             {isScanning ? (
-                                <div className="w-full aspect-[4/3] bg-black relative border-4 border-foreground">
+                                <div className="w-full aspect-video bg-black relative border-4 border-foreground overflow-hidden">
                                     <BarcodeScanner
                                         onDetected={handleDetected}
                                         className="w-full h-full opacity-80"

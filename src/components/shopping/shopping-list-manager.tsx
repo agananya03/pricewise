@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Check, Plus, Trash, Loader2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -31,6 +31,20 @@ export function ShoppingListManager() {
     const [suggestions, setSuggestions] = useState<ProductSuggestion[]>([])
     const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
     const [loading, setLoading] = useState(true)
+    const searchContainerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+                setSuggestions([])
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+        }
+    }, [])
 
     useEffect(() => {
         fetchList()
@@ -141,6 +155,8 @@ export function ShoppingListManager() {
 
     if (loading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin h-6 w-6 text-black" /></div>
 
+
+
     return (
         <Card className="h-full flex flex-col overflow-visible border-black rounded-none shadow-none">
             <CardHeader className="pb-6 border-b border-black">
@@ -156,7 +172,7 @@ export function ShoppingListManager() {
             </CardHeader>
 
 
-            <div className="px-6 pb-2 relative z-20 mt-6">
+            <div className="px-6 pb-2 relative z-20 mt-6" ref={searchContainerRef}>
                 <div className="flex gap-2">
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-2.5 h-4 w-4 text-black" />

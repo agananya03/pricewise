@@ -4,8 +4,29 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Play, ScanBarcode, Users, TrendingDown, CheckCircle, ArrowRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export function Hero() {
+    const { data: session } = useSession()
+    const router = useRouter()
+
+    const handleGetStarted = () => {
+        if (session) {
+            toast.info("User already logged in", {
+                description: "Exploring features section..."
+            })
+            // Scroll to features section
+            const featuresSection = document.getElementById('features')
+            if (featuresSection) {
+                featuresSection.scrollIntoView({ behavior: 'smooth' })
+            }
+        } else {
+            router.push('/login')
+        }
+    }
+
     return (
         <section className="relative w-full overflow-hidden min-h-[90vh] flex items-center bg-black">
 
@@ -33,12 +54,16 @@ export function Hero() {
                                     Scan Item
                                 </Button>
                             </Link>
-                            <Link href="/login">
-                                <Button size="lg" variant="outline" className="w-56 bg-transparent text-white hover:bg-white hover:text-black text-lg h-14 px-8 rounded-none border-2 border-white uppercase font-bold tracking-widest transition-all">
-                                    Get Started
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Button>
-                            </Link>
+
+                            <Button
+                                size="lg"
+                                variant="outline"
+                                onClick={handleGetStarted}
+                                className="w-56 bg-transparent text-white hover:bg-white hover:text-black text-lg h-14 px-8 rounded-none border-2 border-white uppercase font-bold tracking-widest transition-all"
+                            >
+                                Get Started
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </Button>
                         </div>
 
 
