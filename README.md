@@ -35,7 +35,6 @@ Pricewise offers a comprehensive suite of tools to optimize your shopping experi
 17. **Profile Management**: Customize your preferences, search radius, and notification settings.
 18. **Secure Authentication**: Full user account system with secure login and session management.
 19. **Responsive Design**: Fully optimized for mobile, tablet, and desktop devices.
-20. **Dark Mode**: Built-in support for light and dark themes.
 
 ## 🛠️ Technologies Used
 
@@ -57,7 +56,7 @@ Pricewise is built using a modern full-stack architecture, leveraging powerful l
 
 ### Backend
 - **Runtime**: [Node.js](https://nodejs.org/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/) (Hosted on **Supabase**)
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **Authentication**: [NextAuth.js v5](https://authjs.dev/)
 - **Caching**: [Upstash Redis](https://upstash.com/) (Rate limiting & caching)
@@ -66,7 +65,6 @@ Pricewise is built using a modern full-stack architecture, leveraging powerful l
 - **Product Data**: [OpenFoodFacts API](https://world.openfoodfacts.org/)
 - **Geolocation**: [OpenStreetMap (OSM)](https://www.openstreetmap.org/)
 - **AI/OCR**: [Google Cloud Vision](https://cloud.google.com/vision) (Image Analysis)
-- **Payments**: [Stripe](https://stripe.com/) (Subscription/Payment processing)
 
 ### DevOps & Tooling
 - **Linting**: ESLint + Prettier
