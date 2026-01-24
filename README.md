@@ -18,7 +18,7 @@ Pricewise offers a comprehensive suite of tools to optimize your shopping experi
 6. **Real-time Price Comparison**: Compare product prices across different store chains (Walmart, Target, Whole Foods, etc.).
 7. **Price History Integration**: View historical price trends for products to decide the best time to buy.
 8. **Price Alerts**: Set target prices for specific items and receive notifications when they drop.
-9. **Receipt Management**: Upload and store digital copies of your shopping receipts for record-keeping.
+9. **Receipt Scanning & Analytics**: Upload or scan digital copies of your shopping receipts. The system automatically parses items and prices to update your spending history and price tracking (powered by **Google Cloud Vision**).
 
 ### 📍 Location & Maps
 10. **Store Finder**: Interactive map interface (powered by **Leaflet & OpenStreetMap**) to visualize nearby stores.
