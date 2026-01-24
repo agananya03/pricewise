@@ -148,7 +148,7 @@ export default function ProductPage() {
                                             imageUrl: product?.imageUrl
                                         }}
                                         onSuccess={() => {
-                                            // Ideally refresh data or close dialog
+                                            router.push("/scan")
                                         }}
                                     />
                                 </DialogContent>

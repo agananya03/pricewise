@@ -102,31 +102,59 @@ export function BarcodeScanner({
         const file = e.target.files[0]
         const objectUrl = URL.createObjectURL(file)
 
-        Quagga.decodeSingle(
-            {
-                decoder: {
-                    readers: [
-                        "ean_reader",
-                        "ean_8_reader",
-                        "code_128_reader",
-                        "upc_reader",
-                        "upc_e_reader",
-                    ],
-                },
-                locate: true,
-                src: objectUrl,
-            },
-            (result: any) => {
-                if (result?.codeResult) {
-                    onDetected(result.codeResult.code)
-                } else {
-                    if (onError) onError(new Error("No barcode found in image"))
-                }
+        const configs = [
+            { size: 1600, patchSize: "large" },
+            { size: 1280, patchSize: "medium" },
+            { size: 800, patchSize: "medium" },
+            { size: 1920, patchSize: "xlarge" },
+            { size: 640, patchSize: "small" },
+        ]
+
+        const attemptScan = (index: number) => {
+            if (index >= configs.length) {
+                if (onError) onError(new Error("No barcode found in image"))
                 URL.revokeObjectURL(objectUrl)
-                // Reset input value to allow selecting same file again
                 if (fileInputRef.current) fileInputRef.current.value = ""
+                return
             }
-        )
+
+            const config = configs[index]
+
+            Quagga.decodeSingle(
+                {
+                    decoder: {
+                        readers: [
+                            "ean_reader",
+                            "ean_8_reader",
+                            "code_128_reader",
+                            "upc_reader",
+                            "upc_e_reader",
+                        ],
+                    },
+                    locate: true,
+                    inputStream: {
+                        size: config.size,
+                    } as any,
+                    locator: {
+                        patchSize: config.patchSize as any,
+                        halfSample: false,
+                    },
+                    src: objectUrl,
+                },
+                (result: any) => {
+                    if (result?.codeResult) {
+                        onDetected(result.codeResult.code)
+                        URL.revokeObjectURL(objectUrl)
+                        if (fileInputRef.current) fileInputRef.current.value = ""
+                    } else {
+                        // Try next config
+                        attemptScan(index + 1)
+                    }
+                }
+            )
+        }
+
+        attemptScan(0)
     }
 
     return (

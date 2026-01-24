@@ -14,7 +14,7 @@ export async function GET(req: Request) {
             where: q ? {
                 name: { contains: q, mode: 'insensitive' }
             } : undefined,
-            take: 20,
+            take: 50,
             include: {
                 prices: {
                     orderBy: { amount: 'asc' },

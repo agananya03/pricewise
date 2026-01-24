@@ -1,16 +1,19 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
+import { auth } from "@/lib/auth"
 
 export const dynamic = "force-dynamic"
 
 export async function GET() {
     try {
-        // In a real app, we'd filter by authenticated user ID
-        // const session = await auth()
-        // const userId = session?.user?.id
+        const session = await auth()
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
 
-        // For demo, fetch recent receipts
+        // Fetch real receipts for the logged-in user
         const receipts = await prisma.receipt.findMany({
+            where: { userId: session.user.id },
             orderBy: { date: 'desc' },
             take: 50,
             include: { items: true }
@@ -18,6 +21,13 @@ export async function GET() {
 
         // 1. Calculate Totals
         const totalSpent = receipts.reduce((sum, r) => sum + r.total, 0)
+
+        // Fetch user stats for exact totalSaved
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { totalSaved: true }
+        })
+        const totalSaved = user?.totalSaved || 0
 
         // 2. Spending Trends (Last 6 months)
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -39,11 +49,7 @@ export async function GET() {
             }
         })
 
-        // If no data, fill with dummy data for demo visualization
-        const finalSpendingData = totalSpent > 0 ? spendingData : [120, 190, 300, 250, 400, 320]
-
-        // 3. Category Breakdown (Simulated based on dummy store names or item names)
-        // Since our Receipt model is simple, we might guess categories
+        // 3. Category Breakdown
         const categories = [
             { name: "Groceries", value: 0, fill: "#22c55e" }, // green
             { name: "Electronics", value: 0, fill: "#3b82f6" }, // blue
@@ -62,29 +68,19 @@ export async function GET() {
             }
         })
 
-        // Fallback demo data if empty
-        const finalCategories = categories.some(c => c.value > 0)
-            ? categories.filter(c => c.value > 0)
-            : [
-                { name: "Groceries", value: 450, fill: "#22c55e" },
-                { name: "Electronics", value: 300, fill: "#3b82f6" },
-                { name: "Dining", value: 150, fill: "#f59e0b" },
-                { name: "Transport", value: 80, fill: "#8b5cf6" },
-            ]
+        const finalCategories = categories.filter(c => c.value > 0)
 
-        // 4. Savings (Randomized for demo or calculated against MSRP)
-        const totalSaved = Math.round(totalSpent * 0.12) // Assume 12% savings average
-
+        // Return real data (empty if no data, don't fallback to dummy data)
         return NextResponse.json({
             summary: {
-                totalSpent: totalSpent > 0 ? totalSpent : 1245.50,
-                totalSaved: totalSaved > 0 ? totalSpent * 0.12 : 185.20,
-                dealCount: receipts.length > 0 ? receipts.length : 14,
+                totalSpent: totalSpent,
+                totalSaved: totalSaved,
+                dealCount: receipts.length,
             },
             charts: {
                 spending: {
                     labels,
-                    data: finalSpendingData
+                    data: spendingData
                 },
                 categories: finalCategories
             },

@@ -6,6 +6,7 @@ import { BarcodeScanner } from "@/components/scanner/barcode-scanner"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export default function ScanPage() {
     const router = useRouter()
@@ -19,6 +20,11 @@ export default function ScanPage() {
         setIsScanning(false)
         setScanHistory(prev => [code, ...prev.filter(c => c !== code)].slice(0, 10))
         if (navigator.vibrate) navigator.vibrate(200)
+    }
+
+    const handleScanError = (error: any) => {
+        console.error("Scan error:", error)
+        toast.error(error.message || "Failed to scan barcode")
     }
 
     const resetScan = () => {
@@ -42,6 +48,7 @@ export default function ScanPage() {
                                 <div className="w-full aspect-video bg-black relative border-4 border-foreground overflow-hidden">
                                     <BarcodeScanner
                                         onDetected={handleDetected}
+                                        onError={handleScanError}
                                         className="w-full h-full opacity-80"
                                     />
                                     {/* Viewfinder Overlay */}

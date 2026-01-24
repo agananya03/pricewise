@@ -1,34 +1,34 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
+import { auth } from "@/lib/auth"
 
 export const dynamic = "force-dynamic"
 
 export async function GET() {
     try {
-        // Mock user for demo - normally get from session
-        // const userId = ...
+        const session = await auth()
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
 
-        // Find or create default list
-        const lists = await prisma.shoppingList.findMany({
+        // Find or create default list for the logged-in user
+        const list = await prisma.shoppingList.findFirst({
+            where: { userId: session.user.id },
             include: {
                 items: {
                     include: {
                         product: {
                             include: { prices: true }
                         }
+                    },
+                    orderBy: {
+                        id: 'asc'
                     }
                 }
             }
         })
 
-        // For demo purposes, if no list exists, we might return empty or create one?
-        // Let's assume the frontend handles creation or we return empty.
-
-        // We really need a userId to query. Since we don't have auth fully wired in these snippets,
-        // we'll fetch the first list found (dangerous in prod, fine for single-user local demo).
-        const list = lists[0]
-
-        return NextResponse.json(list || null)
+        return NextResponse.json(list || { items: [] })
     } catch (error) {
         return NextResponse.json({ error: "Failed to fetch list" }, { status: 500 })
     }
@@ -36,34 +36,28 @@ export async function GET() {
 
 export async function POST(req: Request) {
     try {
+        const session = await auth()
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+
         const body = await req.json()
         const { productId, name, quantity, listId } = body
 
         let targetListId = listId
 
-        // If no list provided, find first or create
+        // If no list provided, find first or create for this user
         if (!targetListId) {
-            const firstList = await prisma.shoppingList.findFirst()
+            const firstList = await prisma.shoppingList.findFirst({
+                where: { userId: session.user.id }
+            })
             if (firstList) {
                 targetListId = firstList.id
             } else {
-                // Create default list
-                let user = await prisma.user.findFirst() // Fallback user
-
-                if (!user) {
-                    // Create a demo user if none exists
-                    user = await prisma.user.create({
-                        data: {
-                            email: "demo@pricewise.app",
-                            name: "Demo User"
-                        }
-                    })
-                }
-
                 const newList = await prisma.shoppingList.create({
                     data: {
                         name: "My Shopping List",
-                        userId: user.id
+                        userId: session.user.id
                     }
                 })
                 targetListId = newList.id
@@ -84,8 +78,6 @@ export async function POST(req: Request) {
 
             if (productMatch) {
                 finalProductId = productMatch.id
-                // Use the precise product name if we found a match? 
-                // formattedName = productMatch.name 
             }
         }
 
@@ -113,6 +105,11 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
     try {
+        const session = await auth()
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+
         const body = await req.json()
         const { itemId, checked } = body
 
@@ -129,6 +126,11 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: Request) {
     try {
+        const session = await auth()
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+
         const url = new URL(req.url)
         const itemId = url.searchParams.get("itemId")
 

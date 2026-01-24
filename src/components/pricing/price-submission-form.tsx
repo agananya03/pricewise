@@ -5,7 +5,7 @@ import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { DollarSign, Store } from "lucide-react"
+import { IndianRupee, Store } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -95,7 +95,7 @@ export function PriceSubmissionForm({ barcode, productData, onSuccess }: PriceSu
                             <FormLabel>Price</FormLabel>
                             <FormControl>
                                 <div className="relative">
-                                    <DollarSign className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                    <IndianRupee className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                                     <Input type="number" step="0.01" className="pl-8" placeholder="0.00" {...field} />
                                 </div>
                             </FormControl>
