@@ -7,48 +7,71 @@ Pricewise is an intelligent shopping companion designed to help users track pric
 
 Pricewise offers a comprehensive suite of tools to optimize your shopping experience:
 
-1. **Barcode Scanning & Product Lookup**:
-   Instantly scan product barcodes to retrieve detailed information and pricing history. Uses advanced OCR and external databases to identify products quickly.
+### 🛍️ Shopping & Products
+1. **Barcode Scanning**: Integrated camera scanner (powered by QuaggaJS) to instantly identify products.
+2. **Global Product Lookup**: Automatically retrieves product details (Name, Image, Category) from the **OpenFoodFacts API**.
+3. **Smart Search**: Robust search functionality to find products by name, brand, or category.
+4. **Shopping Lists**: Create and manage multiple shopping lists. Check off items as you shop and see estimated totals.
+5. **Favorites**: Save frequently bought items for quick access.
 
-2. **Real-time Price Comparison**:
-   Compare prices for the same product across different physical stores and online retailers. Find the best deal near you with location-based filtering.
+### 💰 Pricing & Savings
+6. **Real-time Price Comparison**: Compare product prices across different store chains (Walmart, Target, Whole Foods, etc.).
+7. **Price History Integration**: View historical price trends for products to decide the best time to buy.
+8. **Price Alerts**: Set target prices for specific items and receive notifications when they drop.
+9. **Receipt Management**: Upload and store digital copies of your shopping receipts for record-keeping.
 
-3. **Smart Shopping Lists**:
-   Create and manage digital shopping lists. Automatically check for deals on items in your list and track your total estimated cost before you even leave home.
+### 📍 Location & Maps
+10. **Store Finder**: Interactive map interface (powered by **Leaflet & OpenStreetMap**) to visualize nearby stores.
+11. **Location Services**: Automatically detects your location to show relevant local pricing and deals.
+12. **Store Layouts**: (Planned) View aisle information for supported stores.
 
-4. **Receipt Scanning & Analytics**:
-   Upload or scan your shopping receipts to track expenses automatically. The system parses receipt data to update price history and provide personal spending analytics.
+### 📊 Analytics & Gamification
+13. **Spending Analytics**: Visual charts (powered by **Recharts**) to track your spending habits over time.
+14. **Personal Savings**: Track your total amount saved through smart comparisons.
+15. **Leaderboards**: Compete with other users to become a "Top Saver" in your community.
+16. **Achievements**: Unlock badges and rewards for scanning items, finding deals, and consistent usage.
 
-5. **Price Alerts**:
-   Set target price alerts for specific products. Receive immediate notifications when a product's price drops below your threshold.
-
-6. **Gamification & Leaderboards**:
-   Earn points for contributing price data, scanning receipts, and saving money. Compete on leaderboards to become a "Top Saver" in your community.
+### 👤 User Experience
+17. **Profile Management**: Customize your preferences, search radius, and notification settings.
+18. **Secure Authentication**: Full user account system with secure login and session management.
+19. **Responsive Design**: Fully optimized for mobile, tablet, and desktop devices.
+20. **Dark Mode**: Built-in support for light and dark themes.
 
 ## 🛠️ Technologies Used
 
-Pricewise is built using a modern full-stack architecture, leveraging powerful libraries and services for a seamless experience:
+Pricewise is built using a modern full-stack architecture, leveraging powerful libraries and services:
 
-### Core Stack
-- **Next.js 16 (App Router)**: React framework for high-performance server-side rendering and static generation.
-- **React 19**: Library for building dynamic and interactive user interfaces.
-- **TypeScript**: Ensures type safety and code robustness across the full stack.
-- **Prisma ORM**: Modern database access for PostgreSQL.
-- **PostgreSQL**: Robust relational database for storing user, product, and pricing data.
+### Frontend
+- **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
+- **Library**: [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/) / Radix Primitives
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+- **Data Fetching**: [TanStack Query](https://tanstack.com/query)
+- **Forms**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+- **Visualization**: [Recharts](https://recharts.org/) (Analytics)
+- **Maps**: [React Leaflet](https://react-leaflet.js.org/) + [Leaflet](https://leafletjs.com/)
+- **Scanning**: [QuaggaJS](https://serratus.github.io/quaggaJS/) (Barcode)
 
-### Frontend & UI
-- **Tailwind CSS v4**: Utility-first CSS framework for rapid and responsive styling.
-- **Shadcn UI**: Accessible and customizable component library.
-- **Lucide React**: Beautiful and consistent iconography.
-- **Recharts**: Data visualization library for price history and spending analytics.
-- **Leaflet / React-Leaflet**: Interactive maps for store locations and radius search.
+### Backend
+- **Runtime**: [Node.js](https://nodejs.org/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/)
+- **ORM**: [Prisma](https://www.prisma.io/)
+- **Authentication**: [NextAuth.js v5](https://authjs.dev/)
+- **Caching**: [Upstash Redis](https://upstash.com/) (Rate limiting & caching)
 
-### Backend & Services
-- **NextAuth.js (v5 Beta)**: Secure authentication and session management.
-- **Upstash Redis**: Serverless Redis for caching and rate limiting.
-- **Google Cloud Vision**: Advanced image analysis and OCR for receipt parsing.
-- **Zod**: TypeScript-first schema declaration and validation.
-- **React Hook Form**: Performant and flexible form validation.
+### Services & APIs
+- **Product Data**: [OpenFoodFacts API](https://world.openfoodfacts.org/)
+- **Geolocation**: [OpenStreetMap (OSM)](https://www.openstreetmap.org/)
+- **AI/OCR**: [Google Cloud Vision](https://cloud.google.com/vision) (Image Analysis)
+- **Payments**: [Stripe](https://stripe.com/) (Subscription/Payment processing)
+
+### DevOps & Tooling
+- **Linting**: ESLint + Prettier
+- **Testing**: Vitest
+- **Package Manager**: npm
 
 ## 🚀 Getting Started
 
