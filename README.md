@@ -15,10 +15,10 @@ Pricewise offers a comprehensive suite of tools to optimize your shopping experi
 5. **Favorites**: Save frequently bought items for quick access.
 
 ### 💰 Pricing & Savings
-6. **Real-time Price Comparison**: Compare product prices across different store chains (Walmart, Target, Whole Foods, etc.).
+6. **Instant Multi-Store Price Comparison**: Compare product prices across different store chains (Walmart, Target, Whole Foods, etc.) based on latest price observations.
 7. **Price History Integration**: View historical price trends for products to decide the best time to buy.
 8. **Price Alerts**: Set target prices for specific items and receive notifications when they drop.
-9. **Receipt Scanning & Analytics**: Upload or scan digital copies of your shopping receipts. The system automatically parses items and prices to update your spending history and price tracking (powered by **Google Cloud Vision**).
+9. **Receipt Scanning & Analytics**: Upload or scan digital copies of your shopping receipts. The system automatically parses items and prices to update your spending history and price tracking (powered by **Tesseract.js**).
 
 ### 📍 Location & Maps
 10. **Store Finder**: Interactive map interface (powered by **Leaflet & OpenStreetMap**) to visualize nearby stores.
@@ -64,7 +64,7 @@ Pricewise is built using a modern full-stack architecture, leveraging powerful l
 ### Services & APIs
 - **Product Data**: [OpenFoodFacts API](https://world.openfoodfacts.org/)
 - **Geolocation**: [OpenStreetMap (OSM)](https://www.openstreetmap.org/)
-- **AI/OCR**: [Google Cloud Vision](https://cloud.google.com/vision) (Image Analysis)
+- **AI/OCR**: [Tesseract.js](https://tesseract.projectnaptha.com/) (Optical Character Recognition)
 
 ### DevOps & Tooling
 - **Linting**: ESLint + Prettier

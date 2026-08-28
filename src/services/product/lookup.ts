@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import { redis } from '@/lib/redis';
 
 export interface ProductData {
     barcode: string;
@@ -13,15 +14,36 @@ export interface ProductData {
 
 export class ProductLookupService {
     private static readonly OFF_API_URL = 'https://world.openfoodfacts.org/api/v2/product';
-    // Note: UPC Database usually requires an API key, implemented here as a placeholder structure
-    // private static readonly UPC_API_URL = 'https://api.upcdatabase.org/product'; 
+    private static readonly CACHE_TTL_SECONDS = 60 * 60 * 24; // Cache for 24 hours
 
     static async search(barcode: string): Promise<ProductData | null> {
-        // Try Open Food Facts first (free, no key required)
-        const offResult = await this.fetchFromOpenFoodFacts(barcode);
-        if (offResult) return offResult;
+        const cacheKey = `product:${barcode}`;
 
-        // Fallback to other providers or return null
+        // 1. Check Redis cache first
+        try {
+            const cachedProduct = await redis.get<ProductData>(cacheKey);
+            if (cachedProduct) {
+                console.log(`[Redis Cache Hit] Product barcode: ${barcode}`);
+                return cachedProduct;
+            }
+        } catch (err) {
+            console.warn('[Redis Cache Error] Proceeding without cache:', err);
+        }
+
+        // 2. Fetch from Open Food Facts if cache miss
+        const offResult = await this.fetchFromOpenFoodFacts(barcode);
+        
+        if (offResult) {
+            // Save result to Redis cache
+            try {
+                await redis.set(cacheKey, offResult, { ex: this.CACHE_TTL_SECONDS });
+                console.log(`[Redis Cache Set] Product barcode: ${barcode}`);
+            } catch (err) {
+                console.warn('[Redis Cache Write Error]:', err);
+            }
+            return offResult;
+        }
+
         return null;
     }
 
@@ -47,3 +69,4 @@ export class ProductLookupService {
         return null;
     }
 }
+
