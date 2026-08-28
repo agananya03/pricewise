@@ -85,7 +85,7 @@ Ensure you have the following installed on your system:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/pricewise.git
+   git clone https://github.com/agananya03/pricewise.git
    cd pricewise
    ```
 
