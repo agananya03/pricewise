@@ -43,3 +43,67 @@ export async function POST(req: NextRequest) {
         )
     }
 }
+
+export async function GET(req: NextRequest) {
+    try {
+        const session = await auth()
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+
+        const alerts = await prisma.priceAlert.findMany({
+            where: {
+                userId: session.user.id,
+                active: true,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        })
+
+        return NextResponse.json(alerts)
+    } catch (error) {
+        console.error("Error fetching alerts:", error)
+        return NextResponse.json(
+            { error: "Internal server error" },
+            { status: 500 }
+        )
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const session = await auth()
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+
+        const { searchParams } = new URL(req.url)
+        const id = searchParams.get("id")
+
+        if (!id) {
+            return NextResponse.json({ error: "Alert ID required" }, { status: 400 })
+        }
+
+        const alert = await prisma.priceAlert.findUnique({
+            where: { id },
+        })
+
+        if (!alert || alert.userId !== session.user.id) {
+            return NextResponse.json({ error: "Alert not found or forbidden" }, { status: 404 })
+        }
+
+        await prisma.priceAlert.delete({
+            where: { id },
+        })
+
+        return NextResponse.json({ success: true, id })
+    } catch (error) {
+        console.error("Error deleting alert:", error)
+        return NextResponse.json(
+            { error: "Internal server error" },
+            { status: 500 }
+        )
+    }
+}
+

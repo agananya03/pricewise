@@ -5,7 +5,6 @@ import { parse, isValid } from "date-fns"
 export const dynamic = "force-dynamic"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/lib/auth"
-import { uploadToStorage } from "@/lib/supabase-admin"
 
 export async function POST(req: NextRequest) {
     try {
@@ -38,34 +37,9 @@ export async function POST(req: NextRequest) {
         console.log("Saving receipt for userId:", userId);
         console.log("Data:", { store, date, total, itemsCount: items?.length });
 
-        let imageUrl: string | undefined;
-        if (imageBase64) {
-            try {
-                console.log("Attempting to upload image to Supabase...");
-                // Extract content type and buffer
-                const matches = imageBase64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-
-                if (matches && matches.length === 3) {
-                    const contentType = matches[1];
-                    const buffer = Buffer.from(matches[2], 'base64');
-                    const fileName = `${userId}/${Date.now()}.${contentType.split('/')[1]}`;
-
-                    // Upload to 'receipts' bucket
-                    const publicUrl = await uploadToStorage(buffer, fileName, contentType);
-                    if (publicUrl) {
-                        imageUrl = publicUrl;
-                        console.log("Image uploaded successfully:", imageUrl);
-                    } else {
-                        console.error("Image upload failed: No public URL returned");
-                    }
-                } else {
-                    console.error("Invalid base64 string format");
-                }
-            } catch (error) {
-                console.error("Failed to upload image to Supabase:", error);
-                // Continue saving receipt even if image upload fails
-            }
-        }
+        // Receipt Privacy (Option A): Avoid storing raw receipt images in cloud storage.
+        // OCR text extraction occurs client-side; only structured receipt data is saved.
+        let imageUrl: string | undefined = undefined;
 
         console.log("Creating prisma record...");
         let parsedDate = new Date();

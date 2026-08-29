@@ -44,27 +44,72 @@ export class ProductLookupService {
             return offResult;
         }
 
-        return null;
+        // 3. Fallback for non-food / unlisted / unavailable external API barcodes
+        const fallbackResult: ProductData = {
+            barcode,
+            name: `Scanned Item (${barcode.slice(-4)})`,
+            description: 'Product information temporarily unavailable.',
+            category: 'General Goods',
+            source: 'Unknown',
+        };
+
+        return fallbackResult;
     }
 
-    private static async fetchFromOpenFoodFacts(barcode: string): Promise<ProductData | null> {
-        try {
-            const response = await axios.get(`${this.OFF_API_URL}/${barcode}.json`);
-            const data = response.data;
 
-            if (data.status === 1 && data.product) {
-                return {
-                    barcode: data.product._id || barcode,
-                    name: data.product.product_name || 'Unknown Product',
-                    description: data.product.generic_name,
-                    imageUrl: data.product.image_url,
-                    category: data.product.categories,
-                    brand: data.product.brands,
-                    source: 'OpenFoodFacts',
-                };
+
+    private static async fetchFromOpenFoodFacts(
+        barcode: string,
+        retries = 2,
+        delayMs = 500
+    ): Promise<ProductData | null> {
+        for (let attempt = 0; attempt <= retries; attempt++) {
+            try {
+                const response = await axios.get(`${this.OFF_API_URL}/${barcode}.json`, {
+                    timeout: 5000, // 5 second timeout
+                    headers: {
+                        'User-Agent': 'PricewiseApp/1.0 (https://github.com/agananya03/pricewise)'
+                    }
+                });
+
+                const data = response.data;
+
+                // Validate response payload
+                if (data && data.status === 1 && data.product && typeof data.product === 'object') {
+                    return {
+                        barcode: data.product._id || barcode,
+                        name: typeof data.product.product_name === 'string' && data.product.product_name.trim() !== ''
+                            ? data.product.product_name
+                            : 'Unknown Product',
+                        description: typeof data.product.generic_name === 'string' ? data.product.generic_name : undefined,
+                        imageUrl: typeof data.product.image_url === 'string' ? data.product.image_url : undefined,
+                        category: typeof data.product.categories === 'string' ? data.product.categories : undefined,
+                        brand: typeof data.product.brands === 'string' ? data.product.brands : undefined,
+                        source: 'OpenFoodFacts',
+                    };
+                }
+                // Product not found in OFF catalog (status !== 1)
+                return null;
+            } catch (error: any) {
+                // Handle 429 Rate Limit
+                if (error.response?.status === 429) {
+                    console.warn(`[OpenFoodFacts Rate Limit] 429 Too Many Requests for barcode: ${barcode}`);
+                    return null;
+                }
+
+                const isNetworkOr5xx = !error.response || (error.response.status >= 500 && error.response.status < 600);
+
+                // Selective Retry for network errors and 5xx server issues
+                if (isNetworkOr5xx && attempt < retries) {
+                    console.warn(`[OpenFoodFacts Retry] Attempt ${attempt + 1}/${retries} failed (${error.message}). Retrying in ${delayMs}ms...`);
+                    await new Promise((res) => setTimeout(res, delayMs));
+                    delayMs *= 2; // Exponential backoff
+                    continue;
+                }
+
+                console.error(`[OpenFoodFacts Error] Final failure for barcode ${barcode}:`, error.message);
+                break;
             }
-        } catch (error) {
-            console.error(`Error fetching from OpenFoodFacts for ${barcode}:`, error);
         }
         return null;
     }

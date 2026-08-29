@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
         }
 
         const body = await req.json()
-        const { barcode, price, store, productData } = body
+        const { barcode, price, store, productData, latitude, longitude } = body
 
         if (!barcode || !price || !store) {
             return NextResponse.json(
@@ -22,34 +22,29 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        // 1. Upsert Product to ensure it exists in our DB
-        // We use the data fetched from the API (passed in body) to populate it if it's new
+        const numericPrice = typeof price === "number" ? price : parseFloat(price)
+        const latNum = latitude !== undefined && latitude !== null ? parseFloat(latitude) : undefined
+        const lonNum = longitude !== undefined && longitude !== null ? parseFloat(longitude) : undefined
+
+        // 1. Upsert Product to ensure it exists in DB
         const product = await prisma.product.upsert({
             where: { barcode },
-            update: {}, // No updates if it exists
+            update: {}, 
             create: {
                 barcode,
-                name: productData.name || "Unknown Product",
-                category: productData.category || "Uncategorized",
-                imageUrl: productData.imageUrl,
-                source: "api_submission", // Marker that this was added via user submission flow
+                name: productData?.name || "Unknown Product",
+                category: productData?.category || "Uncategorized",
+                imageUrl: productData?.imageUrl,
+                source: "api_submission",
             },
         })
 
         // 2. Find or Create Store
-        // For now, we simple-match by name. In future, use geo-location.
         let storeRecord = await prisma.store.findFirst({
             where: { name: store }
         })
 
         if (!storeRecord) {
-            // Create a dummy store for now if not found (or ideally require structured store selection)
-            // Since schema requires address/lat/long, we'll put placeholders or make them optional in schema?
-            // Checking schema: address, city, state are required. 
-            // We will mock them for this simple "text entry" version or strictly we should change schema.
-            // For this MVP, let's create a "User Submitted Store" or just handle the Price without a Store relation if allowed?
-            // Schema: storeId is optional on Price. So we can just set storeId to null if store doesn't exist, 
-            // OR we create a store. Let's create a store with placeholder data to satisfy schema constraints for now.
             storeRecord = await prisma.store.create({
                 data: {
                     name: store,
@@ -57,8 +52,17 @@ export async function POST(req: NextRequest) {
                     city: "Unknown",
                     state: "XX",
                     zipCode: "00000",
-                    latitude: 0,
-                    longitude: 0
+                    latitude: latNum ?? 0,
+                    longitude: lonNum ?? 0
+                }
+            })
+        } else if (latNum !== undefined && lonNum !== undefined && (storeRecord.latitude === 0 && storeRecord.longitude === 0)) {
+            // Update store location if it previously had zero placeholders
+            storeRecord = await prisma.store.update({
+                where: { id: storeRecord.id },
+                data: {
+                    latitude: latNum,
+                    longitude: lonNum
                 }
             })
         }
@@ -67,13 +71,41 @@ export async function POST(req: NextRequest) {
         const newPrice = await prisma.price.create({
             data: {
                 product: { connect: { id: product.id } },
-                amount: price,
+                amount: numericPrice,
                 store: { connect: { id: storeRecord.id } },
-                verified: false, // User submitted
+                latitude: latNum,
+                longitude: lonNum,
+                verified: false,
             },
         })
 
-        return NextResponse.json(newPrice)
+        // 4. Evaluate Price Alerts
+        const matchingAlerts = await prisma.priceAlert.findMany({
+            where: {
+                productId: product.id,
+                active: true,
+                targetPrice: {
+                    gte: numericPrice, // Price dropped below or reached target
+                },
+            },
+        })
+
+        if (matchingAlerts.length > 0) {
+            await prisma.priceAlert.updateMany({
+                where: {
+                    id: { in: matchingAlerts.map(a => a.id) }
+                },
+                data: {
+                    notified: true
+                }
+            })
+        }
+
+        return NextResponse.json({
+            ...newPrice,
+            alertsTriggeredCount: matchingAlerts.length,
+            triggeredAlerts: matchingAlerts
+        })
     } catch (error) {
         console.error("Error creating price:", error)
         return NextResponse.json(
@@ -82,3 +114,4 @@ export async function POST(req: NextRequest) {
         )
     }
 }
+
