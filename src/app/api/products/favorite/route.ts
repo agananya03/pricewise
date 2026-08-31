@@ -38,7 +38,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ favorited: true })
         }
 
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to toggle favorite" }, { status: 500 })
     }
 }

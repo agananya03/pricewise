@@ -16,7 +16,7 @@ export class ReceiptParser {
 
         // 1. Basic Store Extraction (Heuristic: First non-empty line usually store name)
         // Refinement: Look for known chains or keywords in first 5 lines
-        let store = lines[0] || "Unknown Store";
+        const store = lines[0] || "Unknown Store";
 
         // 2. Date Extraction
         let date: string | undefined;
@@ -33,7 +33,6 @@ export class ReceiptParser {
         // Look for lines starting with "Total", "Balance", "Amount"
         // Then find the last dollar amount in that line or subsequent lines
         let total: number | undefined;
-        const totalRegex = /(?:Total|Balance|Amount|Due)\s*[:.$]?\s*(\$?\d+\.\d{2})/i;
         // Also simple currency search at end of receipt
         const currencyRegex = /(\d+\.\d{2})/;
 

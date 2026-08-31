@@ -4,13 +4,12 @@ import { SpendingChart } from "@/components/analytics/spending-chart"
 import { CategoryBreakdown } from "@/components/analytics/category-breakdown"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ScanBarcode, ShoppingBag, TrendingDown, ArrowRight, Loader2 } from "lucide-react"
+import { ScanBarcode, ShoppingBag, TrendingDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
 export default function DashboardPage() {
     const [stats, setStats] = useState({ saved: 0, total: 0, items: 0 })
-    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         fetch('/api/analytics/personal')
@@ -21,9 +20,8 @@ export default function DashboardPage() {
                     total: data.totalSpent || 38500.20,
                     items: data.totalItems || 15
                 })
-                setLoading(false)
             })
-            .catch(() => setLoading(false))
+            .catch(() => {})
     }, [])
 
     return (
@@ -31,7 +29,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground">Welcome back! Here's your savings overview.</p>
+                    <p className="text-muted-foreground">Welcome back! Here&apos;s your savings overview.</p>
                 </div>
                 <div className="flex gap-4">
                     <Link href="/scan">

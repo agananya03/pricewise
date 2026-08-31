@@ -29,7 +29,7 @@ export async function GET() {
         })
 
         return NextResponse.json(list || { items: [] })
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch list" }, { status: 500 })
     }
 }
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         }
 
         let finalProductId = productId
-        let finalName = name || "Unknown Item"
+        const finalName = name || "Unknown Item"
 
         // Auto-link: If no productId, try to find a product by name
         if (!finalProductId && name) {
@@ -119,7 +119,7 @@ export async function PUT(req: Request) {
         })
 
         return NextResponse.json(updated)
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to update item" }, { status: 500 })
     }
 }
@@ -141,7 +141,7 @@ export async function DELETE(req: Request) {
         })
 
         return NextResponse.json({ success: true })
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to delete item" }, { status: 500 })
     }
 }

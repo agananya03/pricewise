@@ -73,7 +73,7 @@ export function ShoppingListManager() {
                 const res = await fetch(`/api/products/search?q=${query}`)
                 const data = await res.json()
                 setSuggestions(data.products || [])
-            } catch (e) {
+            } catch {
                 // ignore
             }
         } else {
@@ -86,7 +86,7 @@ export function ShoppingListManager() {
             const res = await fetch(`/api/products/search`) // Empty query = get all
             const data = await res.json()
             setSuggestions(data.products || [])
-        } catch (e) { }
+        } catch { }
     }
 
     const addItem = async () => {
@@ -109,7 +109,7 @@ export function ShoppingListManager() {
             setSuggestions([])
             setSelectedProductId(null)
             toast.success("Item added")
-        } catch (error) {
+        } catch {
             toast.error("Could not add item")
         }
     }
@@ -122,7 +122,7 @@ export function ShoppingListManager() {
         try {
             await fetch(`/api/shopping-list?itemId=${id}`, { method: 'DELETE' })
             toast.success("Item removed")
-        } catch (error) {
+        } catch {
             setItems(oldItems)
             toast.error("Could not delete item")
         }
@@ -136,7 +136,7 @@ export function ShoppingListManager() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ itemId: id, checked })
             })
-        } catch (error) { }
+        } catch { }
     }
 
     const selectProduct = (p: ProductSuggestion) => {

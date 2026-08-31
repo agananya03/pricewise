@@ -69,7 +69,7 @@ export function ReceiptUploader({ onTextExtracted }: ReceiptUploaderProps) {
             } else {
                 toast.success("Receipt processed successfully")
             }
-        } catch (error) {
+        } catch {
             toast.error("Failed to extract text from receipt")
         } finally {
             setIsProcessing(false)

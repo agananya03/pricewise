@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         }
 
         const body = await req.json()
-        const { store, date, total, items, imageBase64 } = body
+        const { store, date, total, items } = body
 
         // Robust User ID retrieval
         let userId = session.user.id;
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
         // Receipt Privacy (Option A): Avoid storing raw receipt images in cloud storage.
         // OCR text extraction occurs client-side; only structured receipt data is saved.
-        let imageUrl: string | undefined = undefined;
+        const imageUrl: string | undefined = undefined;
 
         console.log("Creating prisma record...");
         let parsedDate = new Date();
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
                     total: total || 0,
                     imageUrl,
                     items: {
-                        create: items.map((item: any) => ({
+                        create: items.map((item: { name: string; price: number; quantity?: number }) => ({
                             name: item.name,
                             price: item.price,
                             quantity: item.quantity

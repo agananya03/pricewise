@@ -23,7 +23,7 @@ export function FavoriteButton({ productId, initialFavorited = false }: { produc
             const data = await res.json()
             setFavorited(data.favorited)
             toast.success(data.favorited ? "Added to favorites" : "Removed from favorites")
-        } catch (error) {
+        } catch {
             setFavorited(!newState) // Revert
             toast.error("Failed to update favorites")
         }

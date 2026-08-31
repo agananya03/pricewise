@@ -24,7 +24,7 @@ export async function GET(req: Request) {
         })
 
         return NextResponse.json({ products })
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Search failed" }, { status: 500 })
     }
 }

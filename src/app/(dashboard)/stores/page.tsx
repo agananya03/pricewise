@@ -30,7 +30,6 @@ interface Store {
 export default function StoresPage() {
     const [stores, setStores] = useState<Store[]>([])
     const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
-    const [loading, setLoading] = useState(true)
 
     // 1. Get Location
     useEffect(() => {
@@ -51,7 +50,6 @@ export default function StoresPage() {
     // 2. Fetch Stores (Refetch when location changes)
     useEffect(() => {
         const fetchStores = async () => {
-            setLoading(true)
             try {
                 let url = '/api/stores'
 
@@ -69,7 +67,7 @@ export default function StoresPage() {
                 console.log("Stores received:", data.length)
                 setStores(data)
 
-                if (userLocation && data.length > 5 && !data.some((s: any) => s.id.startsWith('osm-'))) {
+                if (userLocation && data.length > 5 && !data.some((s: Store) => s.id.startsWith('osm-'))) {
                     // If we have location but no OSM stores, maybe OSM failed?
                     console.warn("Location active but no OSM stores found?")
                 }
@@ -77,8 +75,6 @@ export default function StoresPage() {
             } catch (error) {
                 console.error(error)
                 toast.error("Failed to load stores")
-            } finally {
-                setLoading(false)
             }
         }
 

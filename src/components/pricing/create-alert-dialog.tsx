@@ -51,7 +51,7 @@ export function CreateAlertDialog({ productId, currentPrice }: CreateAlertDialog
 
             toast.success("Price alert set successfully!")
             setOpen(false)
-        } catch (error) {
+        } catch {
             toast.error("Something went wrong. Please try again.")
         } finally {
             setLoading(false)
@@ -70,7 +70,7 @@ export function CreateAlertDialog({ productId, currentPrice }: CreateAlertDialog
                 <DialogHeader>
                     <DialogTitle>Set Price Alert</DialogTitle>
                     <DialogDescription>
-                        We'll notify you when the price meets your criteria.
+                        We&apos;ll notify you when the price meets your criteria.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">

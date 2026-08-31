@@ -1,28 +1,30 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { TrendingDown, TrendingUp, Minus, AlertCircle } from "lucide-react"
+import { TrendingDown, TrendingUp, Minus } from "lucide-react"
 import { PriceHistoryChart } from "./price-history-chart"
 
-interface PriceComparisonProps {
-    comparison: {
-        currentPrice: number
-        lowestPrice: number
-        stats: {
-            min: number
-            max: number
-            avg: number
-            median: number
-        }
-        score: number
-        badge: 'Great' | 'Good' | 'Fair' | 'High' | 'Warning'
-        trend: 'rising' | 'falling' | 'stable'
-        history: {
-            date: string
-            price: number
-            store: string
-        }[]
+export interface PriceComparisonData {
+    currentPrice: number
+    lowestPrice: number
+    stats: {
+        min: number
+        max: number
+        avg: number
+        median: number
     }
+    score: number
+    badge: 'Great' | 'Good' | 'Fair' | 'High' | 'Warning'
+    trend: 'rising' | 'falling' | 'stable'
+    history: {
+        date: string
+        price: number
+        store: string
+    }[]
+}
+
+interface PriceComparisonProps {
+    comparison: PriceComparisonData
 }
 
 export function PriceComparison({ comparison }: PriceComparisonProps) {

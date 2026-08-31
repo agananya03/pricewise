@@ -19,7 +19,7 @@ export default function CommunityPage() {
         // Fetch user achievements
         fetch('/api/gamification/achievements')
             .then(res => res.json())
-            .then(data => setAchievements(data.map((a: any) => a.type)))
+            .then(data => setAchievements(data.map((a: { type: string }) => a.type)))
             .catch(console.error)
     }, [])
 

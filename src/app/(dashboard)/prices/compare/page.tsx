@@ -1,6 +1,6 @@
 import { LocationFilter } from "@/components/pricing/location-filter"
 import { reverseGeocode } from "@/services/geolocation/geocoder"
-import { PriceComparison } from "@/components/pricing/price-comparison"
+import { PriceComparison, PriceComparisonData } from "@/components/pricing/price-comparison"
 import { CreateAlertDialog } from "@/components/pricing/create-alert-dialog"
 import { prisma } from "@/lib/prisma"
 import { PriceComparator } from "@/services/pricing/comparator"
@@ -146,7 +146,7 @@ export default async function PriceComparePage({ searchParams }: PageProps) {
 
                             <div className="flex gap-4">
                                 <div className="flex-1">
-                                    <PriceComparison comparison={comparisonData as any} />
+                                    <PriceComparison comparison={comparisonData as PriceComparisonData} />
                                 </div>
                             </div>
 

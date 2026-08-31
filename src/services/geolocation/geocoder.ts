@@ -31,8 +31,8 @@ export const getCoordinates = async (address: string, retries = 1) => {
                 };
             }
             return null;
-        } catch (error: any) {
-            if (attempt < retries && error.name !== 'AbortError') {
+        } catch (error: unknown) {
+            if (attempt < retries && (error as Error).name !== 'AbortError') {
                 await new Promise(r => setTimeout(r, 500));
                 continue;
             }
@@ -76,8 +76,8 @@ export const reverseGeocode = async (lat: number, lng: number, retries = 1) => {
                 };
             }
             return null;
-        } catch (error: any) {
-            if (attempt < retries && error.name !== 'AbortError') {
+        } catch (error: unknown) {
+            if (attempt < retries && (error as Error).name !== 'AbortError') {
                 await new Promise(r => setTimeout(r, 500));
                 continue;
             }

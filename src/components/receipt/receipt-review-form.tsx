@@ -23,14 +23,14 @@ import { toast } from "sonner"
 
 const itemSchema = z.object({
     name: z.string().min(1, "Name required"),
-    price: z.coerce.number().min(0, "Price must be positive"),
-    quantity: z.coerce.number().min(1).default(1),
+    price: z.number().min(0, "Price must be positive"),
+    quantity: z.number().min(1),
 })
 
 const formSchema = z.object({
     store: z.string().min(1, "Store name required"),
     date: z.string().optional(),
-    total: z.coerce.number().min(0).optional(),
+    total: z.number().min(0).optional(),
     items: z.array(itemSchema),
 })
 
@@ -46,7 +46,7 @@ export function ReceiptReviewForm({ initialData, onSave, onCancel }: ReceiptRevi
     const [isSaving, setIsSaving] = useState(false)
 
     const form = useForm<FormValues>({
-        resolver: zodResolver(formSchema) as any,
+        resolver: zodResolver(formSchema),
         defaultValues: {
             store: initialData.store || "",
             date: initialData.date || new Date().toISOString().split('T')[0],
@@ -147,7 +147,13 @@ export function ReceiptReviewForm({ initialData, onSave, onCancel }: ReceiptRevi
                                     render={({ field }) => (
                                         <FormItem className="w-24">
                                             <FormControl>
-                                                <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    step="0.01"
+                                                    placeholder="0.00"
+                                                    {...field}
+                                                    onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                                                />
                                             </FormControl>
                                         </FormItem>
                                     )}
@@ -158,7 +164,13 @@ export function ReceiptReviewForm({ initialData, onSave, onCancel }: ReceiptRevi
                                     render={({ field }) => (
                                         <FormItem className="w-20">
                                             <FormControl>
-                                                <Input type="number" min="1" placeholder="Qty" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    min="1"
+                                                    placeholder="Qty"
+                                                    {...field}
+                                                    onChange={(e) => field.onChange(e.target.valueAsNumber || 1)}
+                                                />
                                             </FormControl>
                                         </FormItem>
                                     )}
@@ -189,7 +201,13 @@ export function ReceiptReviewForm({ initialData, onSave, onCancel }: ReceiptRevi
                                 <FormItem className="flex items-center gap-2 space-y-0">
                                     <FormLabel className="whitespace-nowrap">Receipt Total:</FormLabel>
                                     <FormControl>
-                                        <Input type="number" step="0.01" className="w-32" {...field} />
+                                        <Input
+                                            type="number"
+                                            step="0.01"
+                                            className="w-32"
+                                            {...field}
+                                            onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                                        />
                                     </FormControl>
                                 </FormItem>
                             )}

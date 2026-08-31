@@ -1,3 +1,3 @@
-export const analyzeImage = async (imageUrl: string) => {
+export const analyzeImage = async (_imageUrl: string) => {
     return { labels: [] }
 }

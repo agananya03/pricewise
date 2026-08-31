@@ -11,7 +11,13 @@ interface PriceHistoryChartProps {
     }[]
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface CustomTooltipProps {
+    active?: boolean
+    payload?: { value: number; payload: { store: string } }[]
+    label?: string
+}
+
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
         return (
             <div className="bg-background border rounded-lg shadow-sm p-3 text-sm">

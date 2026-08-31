@@ -1,4 +1,4 @@
-export const scanBarcode = async (imageData: string) => {
+export const scanBarcode = async (_imageData: string) => {
     // TODO: Implement barcode scanning
     return null
 }

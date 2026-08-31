@@ -56,7 +56,7 @@ export default function ProductPage() {
                     setProduct(data)
                     setError(null)
                 }
-            } catch (err) {
+            } catch {
                 setError("An unexpected error occurred")
                 setProduct(null)
             } finally {
@@ -88,7 +88,7 @@ export default function ProductPage() {
                     </CardHeader>
                     <CardContent>
                         <p className="text-muted-foreground mb-6">
-                            We couldn't find any information for barcode <strong>{params?.code}</strong>.
+                            We couldn&apos;t find any information for barcode <strong>{params?.code}</strong>.
                         </p>
                         <Separator className="my-4" />
                         <ManualEntryForm />

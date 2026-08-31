@@ -3,12 +3,33 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { SpendingChart } from "@/components/analytics/spending-chart"
-import { CategoryBreakdown } from "@/components/analytics/category-breakdown"
+import { CategoryBreakdown, CategoryData } from "@/components/analytics/category-breakdown"
 import { ExportControls } from "@/components/analytics/export-controls"
-import { ArrowDown, DollarSign, PiggyBank, TrendingUp, Wallet } from "lucide-react"
+import { DollarSign, FileText, PiggyBank, Wallet } from "lucide-react"
+
+interface PersonalAnalyticsData {
+    summary: {
+        totalSpent: number
+        totalSaved: number
+        dealCount: number
+    }
+    charts: {
+        spending: {
+            data: number[]
+            labels: string[]
+        }
+        categories: CategoryData[]
+    }
+    recentActivity: {
+        id: string
+        store: string
+        date: string
+        amount: number
+    }[]
+}
 
 export default function AnalyticsPage() {
-    const [data, setData] = useState<any>(null)
+    const [data, setData] = useState<PersonalAnalyticsData | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -99,7 +120,7 @@ export default function AnalyticsPage() {
                 </CardHeader>
                 <CardContent className="pt-6">
                     <div className="space-y-4">
-                        {recentActivity.map((activity: any) => (
+                        {recentActivity.map((activity) => (
                             <div key={activity.id} className="flex items-center justify-between border-b border-foreground/10 pb-4 last:border-0 last:pb-0 hover:bg-foreground/5 p-2 transition-colors -mx-2 px-4">
                                 <div className="space-y-1">
                                     <p className="text-sm font-bold uppercase tracking-tight">{activity.store}</p>
@@ -116,4 +137,3 @@ export default function AnalyticsPage() {
         </div>
     )
 }
-import { FileText } from "lucide-react"

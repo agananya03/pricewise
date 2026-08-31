@@ -22,9 +22,9 @@ export default function ScanPage() {
         if (navigator.vibrate) navigator.vibrate(200)
     }
 
-    const handleScanError = (error: any) => {
+    const handleScanError = (error: unknown) => {
         console.error("Scan error:", error)
-        toast.error(error.message || "Failed to scan barcode")
+        toast.error((error as Error)?.message || "Failed to scan barcode")
     }
 
     const resetScan = () => {
@@ -98,7 +98,7 @@ export default function ScanPage() {
                                 </div>
                             ) : (
                                 <div className="divide-y divide-foreground">
-                                    {scanHistory.map((code, i) => (
+                                    {scanHistory.map((code) => (
                                         <div key={code} className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors group">
                                             <span className="font-mono font-bold">{code}</span>
                                             <Button

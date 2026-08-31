@@ -3,11 +3,11 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 
-interface CategoryData {
+export interface CategoryData {
     name: string
     value: number
     fill: string
-    [key: string]: any
+    [key: string]: unknown
 }
 
 export function CategoryBreakdown({ data }: { data?: CategoryData[] }) {
@@ -44,7 +44,7 @@ export function CategoryBreakdown({ data }: { data?: CategoryData[] }) {
                                 ))}
                             </Pie>
                             <Tooltip
-                                formatter={(value: any) => [`₹${Number(value).toFixed(2)}`, "Value"]}
+                                formatter={(value: unknown) => [`₹${Number(value).toFixed(2)}`, "Value"]}
                                 contentStyle={{ borderRadius: '0px', border: '1px solid black', boxShadow: 'none' }}
                                 itemStyle={{ color: 'black', fontFamily: 'monospace', fontWeight: 'bold' }}
                             />

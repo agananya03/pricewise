@@ -7,13 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { toast } from "sonner"
 
 export function PushManager() {
-    const [permission, setPermission] = useState<NotificationPermission>('default')
-
-    useEffect(() => {
+    const [permission, setPermission] = useState<NotificationPermission>(() => {
         if (typeof window !== 'undefined' && 'Notification' in window) {
-            setPermission(Notification.permission)
+            return Notification.permission
         }
-    }, [])
+        return 'default'
+    })
 
     const enableNotifications = async () => {
         if (!('Notification' in window)) {

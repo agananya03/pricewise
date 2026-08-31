@@ -13,7 +13,7 @@ export async function GET() {
         if (!user) return NextResponse.json([])
 
         return NextResponse.json(user.achievements)
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch achievements" }, { status: 500 })
     }
 }
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
             }
         })
         return NextResponse.json(achievement)
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to unlock" }, { status: 500 })
     }
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Navigation } from "lucide-react"
 
 // Fix for default Leaflet markers in Next.js
-// @ts-ignore
-delete L.Icon.Default.prototype._getIconUrl
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
     iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
@@ -23,8 +22,8 @@ const HeatmapLayer = ({ points }: { points: [number, number, number][] }) => {
     useEffect(() => {
         if (!points.length) return
 
-        // @ts-ignore
-        const heat = L.heatLayer(points, {
+        const heatLayerFn = (L as unknown as { heatLayer: (points: [number, number, number][], options: Record<string, unknown>) => L.Layer }).heatLayer
+        const heat = heatLayerFn(points, {
             radius: 25,
             blur: 15,
             maxZoom: 17,
@@ -60,13 +59,7 @@ interface StoreMapProps {
 }
 
 export default function StoreMap({ stores, userLocation }: StoreMapProps) {
-    const [center, setCenter] = useState<[number, number]>([40.7128, -74.0060]) // Default NYC
-
-    useEffect(() => {
-        if (userLocation) {
-            setCenter(userLocation)
-        }
-    }, [userLocation])
+    const center: [number, number] = userLocation || [40.7128, -74.0060] // Default NYC
 
     // Prepare heatmap data: [lat, lng, intensity]
     // Intensity could be dynamic based on deal count, but we'll use 0.5 for presence

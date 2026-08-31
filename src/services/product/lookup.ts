@@ -1,5 +1,5 @@
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { redis } from '@/lib/redis';
 
 export interface ProductData {
@@ -90,24 +90,25 @@ export class ProductLookupService {
                 }
                 // Product not found in OFF catalog (status !== 1)
                 return null;
-            } catch (error: any) {
+            } catch (error: unknown) {
+                const axiosErr = error as AxiosError;
                 // Handle 429 Rate Limit
-                if (error.response?.status === 429) {
+                if (axiosErr.response?.status === 429) {
                     console.warn(`[OpenFoodFacts Rate Limit] 429 Too Many Requests for barcode: ${barcode}`);
                     return null;
                 }
 
-                const isNetworkOr5xx = !error.response || (error.response.status >= 500 && error.response.status < 600);
+                const isNetworkOr5xx = !axiosErr.response || (axiosErr.response.status >= 500 && axiosErr.response.status < 600);
 
                 // Selective Retry for network errors and 5xx server issues
                 if (isNetworkOr5xx && attempt < retries) {
-                    console.warn(`[OpenFoodFacts Retry] Attempt ${attempt + 1}/${retries} failed (${error.message}). Retrying in ${delayMs}ms...`);
+                    console.warn(`[OpenFoodFacts Retry] Attempt ${attempt + 1}/${retries} failed (${axiosErr.message}). Retrying in ${delayMs}ms...`);
                     await new Promise((res) => setTimeout(res, delayMs));
                     delayMs *= 2; // Exponential backoff
                     continue;
                 }
 
-                console.error(`[OpenFoodFacts Error] Final failure for barcode ${barcode}:`, error.message);
+                console.error(`[OpenFoodFacts Error] Final failure for barcode ${barcode}:`, axiosErr.message);
                 break;
             }
         }

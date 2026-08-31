@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 interface BarcodeScannerProps {
     onDetected: (code: string) => void
-    onError?: (error: any) => void
+    onError?: (error: unknown) => void
     aspectRatio?: { min: number; max: number }
     className?: string
 }
@@ -118,9 +118,14 @@ export function BarcodeScanner({
                 return
             }
 
-            const config = configs[index]
+            const scanConfig = configs[index]
 
-            Quagga.decodeSingle(
+            const quaggaDecode = Quagga.decodeSingle as unknown as (
+                config: Record<string, unknown>,
+                callback: (result: { codeResult?: { code: string } }) => void
+            ) => void
+
+            quaggaDecode(
                 {
                     decoder: {
                         readers: [
@@ -133,15 +138,15 @@ export function BarcodeScanner({
                     },
                     locate: true,
                     inputStream: {
-                        size: config.size,
-                    } as any,
+                        size: scanConfig.size,
+                    },
                     locator: {
-                        patchSize: config.patchSize as any,
+                        patchSize: scanConfig.patchSize,
                         halfSample: false,
                     },
                     src: objectUrl,
                 },
-                (result: any) => {
+                (result) => {
                     if (result?.codeResult) {
                         onDetected(result.codeResult.code)
                         URL.revokeObjectURL(objectUrl)

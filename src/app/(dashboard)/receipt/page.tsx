@@ -2,7 +2,7 @@
 
 import { ReceiptUploader } from "@/components/receipt/receipt-uploader"
 import { ReceiptReviewForm } from "@/components/receipt/receipt-review-form"
-import { ReceiptParser } from "@/services/receipt/receipt-parser"
+import { ReceiptParser, ParsedReceipt } from "@/services/receipt/receipt-parser"
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -10,7 +10,7 @@ import { History } from "lucide-react"
 
 export default function ReceiptPage() {
     const [step, setStep] = useState<"upload" | "review">("upload")
-    const [parsedData, setParsedData] = useState<any>(null)
+    const [parsedData, setParsedData] = useState<ParsedReceipt | null>(null)
     const [imageBase64, setImageBase64] = useState<string | null>(null)
 
     const handleTextExtracted = async (text: string, file: File) => {
@@ -27,7 +27,7 @@ export default function ReceiptPage() {
         setStep("review")
     }
 
-    const handleSave = async (data: any) => {
+    const handleSave = async (data: Record<string, unknown>) => {
         const payload = { ...data, imageBase64 }
 
         const res = await fetch('/api/receipts', {
@@ -102,7 +102,7 @@ export default function ReceiptPage() {
 
                         <div className="border-l-2 border-white pl-6 text-left max-w-sm mx-auto">
                             <p className="font-mono text-sm tracking-widest uppercase leading-relaxed">
-                                Don't let your data fade away.
+                                Don&apos;t let your data fade away.
                                 <br />
                                 Scan receipts to unlock historical pricing and spending insights instantly.
                             </p>

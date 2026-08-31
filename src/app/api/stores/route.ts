@@ -26,7 +26,16 @@ export async function GET(request: Request) {
             }
         })
 
-        let allStores = dbStores.map(s => ({
+        interface UnifiedStore {
+            id: string
+            name: string
+            latitude: number
+            longitude: number
+            address: string
+            chain?: string | null
+        }
+
+        let allStores: UnifiedStore[] = dbStores.map(s => ({
             ...s,
             latitude: s.latitude!,
             longitude: s.longitude!
@@ -38,10 +47,8 @@ export async function GET(request: Request) {
             const lng = parseFloat(lngParam)
 
             // Only fetch from OSM, don't worry about merging duplicates yet
-            // @ts-ignore
             const osmStores = await fetchNearbyPlaces(lat, lng)
 
-            // @ts-ignore
             allStores = [...allStores, ...osmStores]
         }
 

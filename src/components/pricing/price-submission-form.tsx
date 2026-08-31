@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 
 const formSchema = z.object({
-    price: z.coerce.number().min(0.01, "Price must be greater than 0"),
+    price: z.number().min(0.01, "Price must be greater than 0"),
     store: z.string().min(1, "Store name is required"),
 })
 
@@ -40,9 +40,8 @@ interface PriceSubmissionFormProps {
 export function PriceSubmissionForm({ barcode, productData, onSuccess }: PriceSubmissionFormProps) {
     const [isLoading, setIsLoading] = useState(false)
 
-    // Use the derived type for useForm generics
     const form = useForm<FormValues>({
-        resolver: zodResolver(formSchema) as any,
+        resolver: zodResolver(formSchema),
         defaultValues: {
             price: 0,
             store: "",
@@ -75,7 +74,7 @@ export function PriceSubmissionForm({ barcode, productData, onSuccess }: PriceSu
 
             form.reset()
             if (onSuccess) onSuccess()
-        } catch (error) {
+        } catch {
             toast.error("Error", {
                 description: "Something went wrong. Please try again.",
             })
@@ -96,7 +95,14 @@ export function PriceSubmissionForm({ barcode, productData, onSuccess }: PriceSu
                             <FormControl>
                                 <div className="relative">
                                     <IndianRupee className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                                    <Input type="number" step="0.01" className="pl-8" placeholder="0.00" {...field} />
+                                    <Input
+                                        type="number"
+                                        step="0.01"
+                                        className="pl-8"
+                                        placeholder="0.00"
+                                        {...field}
+                                        onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                                    />
                                 </div>
                             </FormControl>
                             <FormMessage />
