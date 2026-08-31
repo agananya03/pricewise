@@ -55,7 +55,7 @@ export function ShoppingListDeepDive() {
                                 <Map className="h-8 w-8" />
                             </div>
                             <h3 className="font-bold text-xl uppercase tracking-wider">Optimized Routes</h3>
-                            <p className="text-gray-400 font-mono text-sm leading-relaxed group-hover:text-gray-600">We'll calculate the perfect route to hit the best prices for your list.</p>
+                            <p className="text-gray-400 font-mono text-sm leading-relaxed group-hover:text-gray-600">We&apos;ll calculate the perfect route to hit the best prices for your list.</p>
                             <div className="bg-black border border-white/30 h-16 w-full mt-4 flex items-center justify-center text-[10px] text-gray-500 font-mono uppercase group-hover:border-black/30">
                                 [ROUTE MAP VISUALIZATION]
                             </div>

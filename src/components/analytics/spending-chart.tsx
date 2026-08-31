@@ -57,7 +57,7 @@ export function SpendingChart({ data, labels }: SpendingChartProps) {
                             />
                             <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} stroke="#000000" />
                             <Tooltip
-                                formatter={(value: any) => [`₹${Number(value).toFixed(2)}`, "Spent"]}
+                                formatter={(value: unknown) => [`₹${Number(value).toFixed(2)}`, "Spent"]}
                                 contentStyle={{ borderRadius: '0px', border: '1px solid black', boxShadow: 'none' }}
                                 itemStyle={{ color: 'black', fontFamily: 'monospace', fontWeight: 'bold' }}
                             />

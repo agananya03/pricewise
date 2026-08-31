@@ -1,10 +1,9 @@
 "use client"
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { ArrowUpRight, TrendingUp, AlertCircle, ShoppingBag } from "lucide-react"
+import { ArrowUpRight, TrendingUp, AlertCircle } from "lucide-react"
 
 export function AnalyticsPreview() {
     const data = [
@@ -23,11 +22,11 @@ export function AnalyticsPreview() {
                         <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6">
                             Money <br /><span className="text-transparent" style={{ WebkitTextStroke: "1px white" }}>Flow</span>
                         </h2>
-                        <p className="text-xl text-gray-400 mb-12 font-mono">
-                            // VISUALIZE SPENDING.<br />
-                            // PLUG LEAKS.<br />
-                            // OPTIMIZE BUDGET.
-                        </p>
+                        <div className="text-xl text-gray-400 mb-12 font-mono">
+                            {"// VISUALIZE SPENDING."}<br />
+                            {"// PLUG LEAKS."}<br />
+                            {"// OPTIMIZE BUDGET."}
+                        </div>
 
                         <div className="space-y-6">
                             {/* Insight 1 */}

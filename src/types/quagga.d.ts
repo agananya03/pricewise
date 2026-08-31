@@ -29,7 +29,7 @@ declare module 'quagga' {
         };
     }
 
-    export function init(config: QuaggaConfig, callback: (err: any) => void): void;
+    export function init(config: QuaggaConfig, callback: (err: unknown) => void): void;
     export function start(): void;
     export function stop(): void;
     export function onDetected(callback: (result: QuaggaResult) => void): void;

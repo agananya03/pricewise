@@ -1,6 +1,6 @@
 "use client"
 
-import { Users, TrendingUp, Award, MapPin, ThumbsUp } from "lucide-react"
+import { TrendingUp, Award, MapPin, ThumbsUp } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"

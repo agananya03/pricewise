@@ -6,8 +6,24 @@ import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import { toast } from "sonner"
 
+interface RecentActivityItem {
+    id?: string
+    store: string
+    date: string
+    amount: number
+}
+
+interface ExportData {
+    summary: {
+        totalSpent: number
+        totalSaved: number
+        dealCount: number
+    }
+    recentActivity: RecentActivityItem[]
+}
+
 interface ExportProps {
-    data: any // Keeping loose for flexibility in demo
+    data: ExportData
 }
 
 export function ExportControls({ data }: ExportProps) {
@@ -17,7 +33,7 @@ export function ExportControls({ data }: ExportProps) {
             // Flatten data for CSV
             const rows = [
                 ['Date', 'Store', 'Amount', 'Category'],
-                ...data.recentActivity.map((r: any) => [
+                ...data.recentActivity.map((r: RecentActivityItem) => [
                     r.date,
                     r.store,
                     r.amount.toFixed(2),
@@ -59,7 +75,7 @@ export function ExportControls({ data }: ExportProps) {
             autoTable(doc, {
                 startY: 55,
                 head: [['Date', 'Store', 'Amount']],
-                body: data.recentActivity.map((r: any) => [
+                body: data.recentActivity.map((r: RecentActivityItem) => [
                     r.date,
                     r.store,
                     `$${r.amount.toFixed(2)}`

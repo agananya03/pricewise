@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, Bell, Users, Search, ShoppingCart, MapPin } from "lucide-react"
+import { Check, ShoppingCart, MapPin } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"

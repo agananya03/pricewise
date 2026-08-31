@@ -5,7 +5,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export function HeatmapSection() {
-    const [location, setLocation] = useState("LOCATING...")
+    const [location, setLocation] = useState(() => {
+        if (typeof window !== 'undefined' && !('geolocation' in navigator)) {
+            return "NOT SUPPORTED"
+        }
+        return "LOCATING..."
+    })
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
     const fetchLocation = () => {
@@ -26,7 +31,7 @@ export function HeatmapSection() {
                     } else {
                         setLocation("UNKNOWN LOCATION")
                     }
-                } catch (e) {
+                } catch {
                     setLocation("LOCATION ERROR")
                 }
             }, (error) => {
@@ -49,7 +54,38 @@ export function HeatmapSection() {
     }
 
     useEffect(() => {
-        fetchLocation()
+        if (typeof window !== 'undefined' && "geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const { latitude, longitude } = position.coords
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                    const data = await res.json()
+                    if (data && data.address) {
+                        const city = data.address.city || data.address.town || data.address.village || data.address.county || ""
+                        const state = data.address.state || ""
+                        const locString = [city, state].filter(Boolean).join(", ")
+                        setLocation(locString.toUpperCase())
+                    } else {
+                        setLocation("UNKNOWN LOCATION")
+                    }
+                } catch {
+                    setLocation("LOCATION ERROR")
+                }
+            }, (error) => {
+                console.error(error)
+                if (error.code === error.PERMISSION_DENIED) {
+                    setLocation("PERMISSION DENIED")
+                    setErrorMsg("Enable location in browser settings")
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    setLocation("UNAVAILABLE")
+                    setErrorMsg("GPS signal lost")
+                } else if (error.code === error.TIMEOUT) {
+                    setLocation("TIMEOUT")
+                } else {
+                    setLocation("LOCATION ERROR")
+                }
+            })
+        }
     }, [])
 
     return (

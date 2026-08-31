@@ -2,8 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Play, ScanBarcode, Users, TrendingDown, CheckCircle, ArrowRight } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { ScanBarcode, CheckCircle, ArrowRight } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"

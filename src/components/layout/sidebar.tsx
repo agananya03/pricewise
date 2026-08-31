@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Barcode, FileText, Home, Settings, ShoppingCart, Map as MapIcon, PieChart, CheckSquare, Users } from "lucide-react"
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
+type SidebarProps = React.HTMLAttributes<HTMLDivElement>
 
 export function Sidebar({ className }: SidebarProps) {
     const pathname = usePathname()

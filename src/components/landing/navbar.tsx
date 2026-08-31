@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ScanBarcode, ShoppingBag, Users, LayoutDashboard, Menu } from "lucide-react"
+import { ScanBarcode, LayoutDashboard, Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
 

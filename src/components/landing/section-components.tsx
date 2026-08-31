@@ -1,6 +1,6 @@
 "use client"
 
-import { Star, Check, ArrowRight } from "lucide-react"
+import { Star, Check } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -19,7 +19,7 @@ export function Testimonials() {
                                 <div className="flex gap-1">
                                     {[1, 2, 3, 4, 5].map(s => <Star key={s} className="h-4 w-4 fill-yellow-400 text-yellow-400" />)}
                                 </div>
-                                <p className="text-gray-600 dark:text-gray-300 italic">"I discovered I was overpaying ₹200 for olive oil! PriceWise saved me ₹12,000 in just 3 months. It's an absolute game changer."</p>
+                                <p className="text-gray-600 dark:text-gray-300 italic">&quot;I discovered I was overpaying ₹200 for olive oil! PriceWise saved me ₹12,000 in just 3 months. It&apos;s an absolute game changer.&quot;</p>
                                 <div className="flex items-center gap-4 pt-4">
                                     <Avatar>
                                         <AvatarImage src={`https://i.pravatar.cc/150?u=${i}`} />

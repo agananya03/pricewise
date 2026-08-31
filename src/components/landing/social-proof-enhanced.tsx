@@ -22,7 +22,7 @@ export function SocialProofEnhanced() {
                                 {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-4 w-4 fill-current" />)}
                             </div>
                             <p className="text-sm font-mono leading-relaxed mb-8 flex-1 uppercase">
-                                "I discovered I was overpaying ₹600/month on groceries! The shopping list feature tracks everything automatically."
+                                &quot;I discovered I was overpaying ₹600/month on groceries! The shopping list feature tracks everything automatically.&quot;
                             </p>
                             <div className="flex items-center gap-4 pt-4 border-t-2 border-current">
                                 <Avatar className="h-10 w-10 border-2 border-current rounded-none">
@@ -45,7 +45,7 @@ export function SocialProofEnhanced() {
                             </div>
                             <h3 className="font-black text-xl mb-4 text-white uppercase tracking-widest">Achievement Unlocked</h3>
                             <p className="text-gray-400 font-mono text-xs mb-8 uppercase tracking-wide">
-                                "Together we've reported 50,000 prices in Mumbai this month"
+                                &quot;Together we&apos;ve reported 50,000 prices in Mumbai this month&quot;
                             </p>
                             <div className="font-black text-4xl text-white mb-2">12,000+</div>
                             <div className="text-xs text-white border-t border-white pt-2 uppercase font-bold tracking-widest">Families Helped</div>
@@ -59,7 +59,7 @@ export function SocialProofEnhanced() {
                                 {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-4 w-4 fill-current" />)}
                             </div>
                             <p className="text-sm font-mono leading-relaxed mb-8 flex-1 uppercase">
-                                "The shared shopping list with my wife is a game-changer. We both add items and see the best prices instantly."
+                                &quot;The shared shopping list with my wife is a game-changer. We both add items and see the best prices instantly.&quot;
                             </p>
                             <div className="flex items-center gap-4 pt-4 border-t-2 border-current">
                                 <Avatar className="h-10 w-10 border-2 border-current rounded-none">

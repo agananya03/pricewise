@@ -13,7 +13,7 @@ export function FeatureGrid() {
                         Toolkit
                     </h2>
                     <p className="text-xl text-gray-400 font-mono">
-                        // ESSENTIAL TOOLS FOR SMART SHOPPING
+                        {"// ESSENTIAL TOOLS FOR SMART SHOPPING"}
                     </p>
                 </div>
 

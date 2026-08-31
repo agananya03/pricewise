@@ -1,7 +1,6 @@
 "use client"
 
-import { Trophy, Target, Award, Star } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Trophy, Target, Star } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
